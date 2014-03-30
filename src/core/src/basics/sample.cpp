@@ -237,8 +237,8 @@ bool Sample::apply_loops( const Loops& lo )
 		assert( x==new_length );
 	}
 	__loops = lo;
-	delete __data_l;
-	delete __data_r;
+	delete [] __data_l;
+	delete [] __data_r;
 	__data_l = new_data_l;
 	__data_r = new_data_r;
 	__frames = new_length;
@@ -412,14 +412,14 @@ void Sample::apply_rubberband( const Rubberband& rb )
 
 	// DEBUGLOG( QString( "%1 frames processed, %2 frames retrieved" ).arg( __frames ).arg( retrieved ) );
 	// final data buffers
-	delete __data_l;
-	delete __data_r;
+	delete [] __data_l;
+	delete [] __data_r;
 	__data_l = new float[ retrieved ];
 	__data_r = new float[ retrieved ];
 	memcpy( __data_l, out_data_l, retrieved*sizeof( float ) );
 	memcpy( __data_r, out_data_r, retrieved*sizeof( float ) );
-	delete out_data_l;
-	delete out_data_r;
+	delete [] out_data_l;
+	delete [] out_data_r;
 	// update sample
 	__rubberband = rb;
 	__frames = retrieved;
@@ -524,19 +524,28 @@ bool Sample::write( const QString& path, int format )
 	sf_info.format = format;
 	if ( !sf_format_check( &sf_info ) ) {
 		___ERRORLOG( "SF_INFO error" );
+		delete[] obuf;
 		return false;
 	}
+
 	SNDFILE* sf_file = sf_open( path.toLocal8Bit().data(), SFM_WRITE, &sf_info ) ;
+
 	if ( sf_file==0 ) {
 		___ERRORLOG( QString( "sf_open error : %1" ).arg( sf_strerror( sf_file ) ) );
+		delete[] obuf;
 		return false;
 	}
+
 	sf_count_t res = sf_writef_float( sf_file, obuf, __frames );
+
 	if ( res<=0 ) {
 		___ERRORLOG( QString( "sf_writef_float error : %1" ).arg( sf_strerror( sf_file ) ) );
+		delete[] obuf;
 		return false;
 	}
+
 	sf_close( sf_file );
+
 	delete[] obuf;
 	return true;
 }

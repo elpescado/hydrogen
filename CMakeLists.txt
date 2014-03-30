@@ -19,7 +19,7 @@ PROJECT(hydrogen)
 SET(VERSION_MAJOR "0")
 SET(VERSION_MINOR "9")
 SET(VERSION_PATCH "6")
-#SET(VERSION_SUFFIX "beta3")
+#SET(VERSION_SUFFIX "RC1")
 
 SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -44,7 +44,7 @@ ELSE()
     OPTION(WANT_SHARED      "Build the core library shared." ON)
 ENDIF()
 
-OPTION(WANT_LIBARCHIVE   "Enable use of libarchive instead of libtar" OFF)
+OPTION(WANT_LIBARCHIVE   "Enable use of libarchive instead of libtar" ON)
 OPTION(WANT_LADSPA       "Enable use of LADSPA plugins" ON)
 
 IF(APPLE)
@@ -89,14 +89,20 @@ ELSE()
 ENDIF()
 
 #SET(CMAKE_CXX_FLAGS "-fno-implement-inlines -finline-small-functions -findirect-inlining -fpartial-inlining")
-SET(CMAKE_CXX_FLAGS "-O2 -fno-implement-inlines")
+IF(APPLE)
+	SET(CMAKE_CXX_FLAGS "-O2")
+ELSE()
+	SET(CMAKE_CXX_FLAGS "-O2 -fno-implement-inlines")
+ENDIF()
+
 SET(CMAKE_CXX_FLAGS_RELEASE "")
+
 SET(CMAKE_CXX_FLAGS_DEBUG "-g ")#-Winline")
 
 
 IF(APPLE)
 	#Compile for 32bit and 64bit intel macs
-	SET (CMAKE_OSX_ARCHITECTURES "i386;x86_64;")
+	SET (CMAKE_OSX_ARCHITECTURES "x86_64;")
 ENDIF()
 #
 # MANDATORY PKGS AND DEFAULT OPTIONS
