@@ -30,6 +30,7 @@
 
 #define EMPTY_INSTR_ID          -1
 #define METRONOME_INSTR_ID      -2
+#define PLAYBACK_INSTR_ID       -3
 
 namespace H2Core
 {
@@ -633,4 +634,4 @@ inline void Instrument::set_currently_exported( bool isCurrentlyExported )
 
 #endif // H2C_INSTRUMENT_H
 
-/* vim: set softtabstop=4 expandtab:  */
+/* vim: set softtabstop=4 noexpandtab:  */

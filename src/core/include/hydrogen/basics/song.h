@@ -205,7 +205,7 @@ class Song : public H2Core::Object
 			return __velocity_automation_path;
 		}
 
-        DrumkitComponent* get_component( int ID );
+		DrumkitComponent* get_component( int ID );
 
 		void readTempPatternList( QString filename );
 
@@ -219,15 +219,36 @@ class Song : public H2Core::Object
 			__latest_round_robins[start_velocity] = latest_round_robin;
 		}
 
+		QString&	get_playback_track_filename(){
+			return __playback_track_filename;
+		}
+		void	set_playback_track_filename( QString filename ){
+			__playback_track_filename = filename;
+		}
+
+		bool	get_playback_track_enabled(){
+			return __playback_track_enabled;
+		}
+		void	set_playback_track_enabled( bool enabled ){
+			__playback_track_enabled = enabled;
+		}
+		
+		float	get_playback_track_volume(){
+			return __playback_track_volume;
+		}
+		void	set_playback_track_volume( float volume ){
+			__playback_track_volume = volume;
+		}
+
 
 	private:
-		float								__volume;						///< volume of the song (0.0..1.0)
-		float								__metronome_volume;				///< Metronome volume
+		float								__volume;					///< volume of the song (0.0..1.0)
+		float								__metronome_volume;			///< Metronome volume
 		QString								__notes;
 		PatternList*						__pattern_list;				///< Pattern list
 		std::vector<PatternList*>*			__pattern_group_sequence;	///< Sequence of pattern groups
 		InstrumentList*						__instrument_list;			///< Instrument list
-		std::vector<DrumkitComponent*>*		__components;            ///< list of drumkit component
+		std::vector<DrumkitComponent*>*		__components;				///< list of drumkit component
 		QString								__filename;
 		bool								__is_loop_enabled;
 		float								__humanize_time_value;
@@ -236,7 +257,10 @@ class Song : public H2Core::Object
 		bool								__is_modified;
 		std::map< float, int> 				__latest_round_robins;
 		SongMode							__song_mode;
-		AutomationPath*                     __velocity_automation_path;
+		QString								__playback_track_filename;
+		bool								__playback_track_enabled;
+		float								__playback_track_volume;
+		AutomationPath*						__velocity_automation_path;
 };
 
 

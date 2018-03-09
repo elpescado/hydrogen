@@ -25,7 +25,7 @@ SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 IF(VERSION_SUFFIX)
 	SET(DISPLAY_VERSION "${VERSION}-${VERSION_SUFFIX}")
-ELSE() 
+ELSE()
 	EXECUTE_PROCESS(COMMAND git log --pretty=format:'%h' -n 1 OUTPUT_VARIABLE GIT_REVISION )
 	SET(DISPLAY_VERSION "${VERSION}-${GIT_REVISION}")
 ENDIF(VERSION_SUFFIX)
@@ -147,11 +147,10 @@ ELSE(MINGW)
 		SET(CMAKE_INSTALL_PREFIX "/usr" )
     ELSE(APPLE)
         SET(OSS_LIB_PATHS "/usr/lib${LIB_SUFFIX}/oss/lib" "/usr/local/lib${LIB_SUFFIX}/oss/lib" )
-        SET(RUBBERBAND_INCLUDE_PATHS "/usr/include/rubberband" )
     ENDIF(APPLE)
 ENDIF(MINGW)
 
-#Installation paths 
+#Installation paths
 # TODO remove data from path
 SET(SYS_DATA_PATH "${CMAKE_INSTALL_PREFIX}/share/hydrogen/data")
 # TODO remove data from path, could be .config/hydrogen
@@ -220,12 +219,11 @@ IF(APPLE)
 ENDIF()
 FIND_HELPER(PORTAUDIO portaudio-2.0 portaudio.h portaudio)
 FIND_HELPER(PORTMIDI portmidi portmidi.h portmidi)
-FIND_HELPER(PULSEAUDIO pulseaudio pulse/pulseaudio.h pulse)
+FIND_HELPER(PULSEAUDIO libpulse pulse/pulseaudio.h pulse)
 FIND_HELPER(LASH lash-1.0 lash/lash.h lash)
 FIND_HELPER(LRDF lrdf lrdf.h lrdf)
-FIND_HELPER(RAPTOR raptor2 raptor.h raptor)
 
-FIND_HELPER(RUBBERBAND rubberband RubberBandStretcher.h rubberband)
+FIND_HELPER(RUBBERBAND rubberband rubberband/RubberBandStretcher.h rubberband)
 FIND_HELPER(CPPUNIT cppunit cppunit/TestCase.h cppunit)
 
 
@@ -248,7 +246,7 @@ endif(DOXYGEN_FOUND)
 #
 # COMPUTE H2CORE_HAVE_xxx xxx_STATUS_REPORT
 #
-SET(STATUS_LIST LIBSNDFILE LIBTAR LIBARCHIVE LADSPA ALSA OSS JACK JACKSESSION OSC COREAUDIO COREMIDI PORTAUDIO PORTMIDI PULSEAUDIO LASH LRDF RAPTOR RUBBERBAND CPPUNIT )
+SET(STATUS_LIST LIBSNDFILE LIBTAR LIBARCHIVE LADSPA ALSA OSS JACK JACKSESSION OSC COREAUDIO COREMIDI PORTAUDIO PORTMIDI PULSEAUDIO LASH LRDF RUBBERBAND CPPUNIT )
 FOREACH( _pkg ${STATUS_LIST})
     COMPUTE_PKGS_FLAGS(${_pkg})
 ENDFOREACH()
@@ -302,7 +300,7 @@ COLOR_MESSAGE("${cyan}Supported audio interfaces${reset}
 * ${purple}OSS${reset}                          : ${OSS_STATUS}
 * ${purple}JACK${reset}                         : ${JACK_STATUS}
 * ${purple}JACKSESSION${reset}                  : ${JACKSESSION_STATUS}
-* ${purple}OSC${reset}                  : ${OSC_STATUS}   
+* ${purple}OSC${reset}                          : ${OSC_STATUS}
 * ${purple}CoreAudio${reset}                    : ${COREAUDIO_STATUS}
 * ${purple}CoreMidi${reset}                     : ${COREMIDI_STATUS}
 * ${purple}PortAudio${reset}                    : ${PORTAUDIO_STATUS}
@@ -314,7 +312,6 @@ COLOR_MESSAGE("${cyan}Usefull extensions${reset}
 -----------------------------------------
 * ${purple}LASH${reset}                         : ${LASH_STATUS}
 * ${purple}LRDF${reset}                         : ${LRDF_STATUS}
-* ${purple}RAPTOR${reset}                       : ${RAPTOR_STATUS}
 * ${purple}RUBBERBAND${reset}                   : ${RUBBERBAND_STATUS}
 *                                ${LIBRUBBERBAND_MSG}\n"
 )

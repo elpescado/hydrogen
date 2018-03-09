@@ -1575,7 +1575,9 @@ void audioEngine_startAudioDrivers()
 #endif
 	} else if ( preferencesMng->m_sMidiDriver == "PortMidi" ) {
 #ifdef H2CORE_HAVE_PORTMIDI
-		m_pMidiDriver = new PortMidiDriver();
+		PortMidiDriver* pPortMidiDriver = new PortMidiDriver();
+		m_pMidiDriver = pPortMidiDriver;
+		m_pMidiDriverOut = pPortMidiDriver;
 		m_pMidiDriver->open();
 		m_pMidiDriver->setActive( true );
 #endif
@@ -1727,6 +1729,7 @@ Hydrogen::Hydrogen()
 
 	m_bExportSessionIsActive = false;
 	m_pTimeline = new Timeline();
+	m_pCoreActionController = new CoreActionController();
 
 	hydrogenInstance = this;
 
@@ -1741,7 +1744,13 @@ Hydrogen::Hydrogen()
 		m_nInstrumentLookupTable[i] = i;
 	}
 
-
+#ifdef H2CORE_HAVE_OSC
+	if( Preferences::get_instance()->getOscServerEnabled() )
+	{
+		OscServer* pOscServer = OscServer::get_instance();
+		pOscServer->start();
+	}
+#endif
 }
 
 Hydrogen::~Hydrogen()
@@ -1765,6 +1774,7 @@ Hydrogen::~Hydrogen()
 	audioEngine_destroy();
 	__kill_instruments();
 
+	delete m_pCoreActionController;
 	delete m_pTimeline;
 
 	__instance = NULL;
@@ -1782,7 +1792,7 @@ void Hydrogen::create_instance()
 
 #ifdef H2CORE_HAVE_OSC
 	NsmClient::create_instance();
-	OscServer::create_instance();
+	OscServer::create_instance( Preferences::get_instance() );
 #endif
 
 	if ( __instance == 0 ) {
@@ -1825,6 +1835,20 @@ void Hydrogen::sequencer_stop()
 	Preferences::get_instance()->setRecordEvents(false);
 }
 
+void Hydrogen::setPlaybackTrackState(bool state)
+{
+	Song* pSong = getSong();
+	pSong->set_playback_track_enabled(state);
+}
+
+void Hydrogen::loadPlaybackTrack(QString filename)
+{
+	Song* pSong = getSong();
+	pSong->set_playback_track_filename(filename);
+
+	AudioEngine::get_instance()->get_sampler()->reinitialize_playback_track();
+}
+
 void Hydrogen::setSong( Song *pSong )
 {
 	assert ( pSong );
@@ -1853,6 +1877,11 @@ void Hydrogen::setSong( Song *pSong )
 	audioEngine_setSong ( pSong );
 
 	__song = pSong;
+
+	//load new playback track information
+	AudioEngine::get_instance()->get_sampler()->reinitialize_playback_track();
+	
+	m_pCoreActionController->initExternalControlInterfaces();
 }
 
 /* Mean: remove current song from memory */
@@ -2574,6 +2603,8 @@ int Hydrogen::loadDrumkit( Drumkit *pDrumkitInfo, bool conditional )
 #endif
 
 	m_audioEngineState = old_ae_state;
+	
+	m_pCoreActionController->initExternalControlInterfaces();
 
 	return 0;	//ok
 }
@@ -3048,8 +3079,8 @@ void Hydrogen::handleBeatCounter()
 					(float) ((int) (60 / m_nBeatDiffAverage * 100))
 					/ 100;
 			AudioEngine::get_instance()->lock( RIGHT_HERE );
-			if ( m_fBeatCountBpm > 500)
-				m_fBeatCountBpm = 500;
+			if ( m_fBeatCountBpm > MAX_BPM)
+				m_fBeatCountBpm = MAX_BPM;
 			setBPM( m_fBeatCountBpm );
 			AudioEngine::get_instance()->unlock();
 			if (Preferences::get_instance()->m_mmcsetplay
@@ -3326,12 +3357,16 @@ void Hydrogen::setTimelineBpm()
 	setNewBpmJTM( RealtimeBPM );
 }
 
-void startOsc()
+#ifdef H2CORE_HAVE_OSC
+void startOscServer()
 {
+	OscServer* pOscServer = OscServer::get_instance();
 	
+	if(pOscServer){
+		pOscServer->start();
+	}
 }
 
-#ifdef H2CORE_HAVE_OSC
 void Hydrogen::startNsmClient()
 {
 	//NSM has to be started before jack driver gets created
@@ -3339,12 +3374,6 @@ void Hydrogen::startNsmClient()
 
 	if(pNsmClient){
 		pNsmClient->createInitialClient();
-	}
-
-
-	OscServer* pOscServer = OscServer::get_instance();
-	if(pOscServer){
-		pOscServer->start();
 	}
 }
 #endif

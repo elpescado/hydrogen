@@ -44,6 +44,11 @@
 #include <QDir>
 //#include <QApplication>
 
+static bool shouldRemove(QString& first, QString& second)
+{
+	return (first.compare(second) == 0);
+};
+
 namespace H2Core
 {
 
@@ -84,7 +89,7 @@ Preferences::Preferences()
 	__rubberBandCalcTime = 5;
 
 	QString rubberBandCLIPath = getenv( "PATH" );
-	QStringList rubberBandCLIPathList = rubberBandCLIPath.split(":");//linx use ":" as seperator. maybe windows and osx use other seperators
+	QStringList rubberBandCLIPathList = rubberBandCLIPath.split(":");//linux use ":" as seperator. maybe windows and osx use other seperators
 
 	//find the Rubberband-CLI in system env
 	//if this fails a second test will check individual user settings
@@ -99,32 +104,6 @@ Preferences::Preferences()
 			readPrefFileforotherplaces = true;
 		}
 	}
-
-	char * ladpath = getenv( "LADSPA_PATH" );	// read the Environment variable LADSPA_PATH
-	if ( ladpath ) {
-		INFOLOG( "Found LADSPA_PATH environment variable" );
-		QString sLadspaPath = QString::fromLocal8Bit(ladpath);
-		int pos;
-		while ( ( pos = sLadspaPath.indexOf( ":" ) ) != -1 ) {
-			QString sPath = sLadspaPath.left( pos );
-			m_ladspaPathVect.push_back( sPath );
-			sLadspaPath = sLadspaPath.mid( pos + 1, sLadspaPath.length() );
-		}
-		m_ladspaPathVect.push_back( sLadspaPath );
-	} else {
-#ifdef Q_OS_MACX
-		m_ladspaPathVect.push_back( qApp->applicationDirPath() + "/../Resources/plugins" );
-		m_ladspaPathVect.push_back( "/Library/Audio/Plug-Ins/LADSPA/" );
-		m_ladspaPathVect.push_back( QDir::homePath().append( "/Library/Audio/Plug-Ins/LADSPA" ));
-#else
-		m_ladspaPathVect.push_back( "/usr/lib/ladspa" );
-		m_ladspaPathVect.push_back( "/usr/local/lib/ladspa" );
-		m_ladspaPathVect.push_back( "/usr/lib64/ladspa" );
-		m_ladspaPathVect.push_back( "/usr/local/lib64/ladspa" );
-#endif
-
-	}
-
 
 	m_pDefaultUIStyle = new UIStyle();
 	m_nDefaultUILayout = UI_LAYOUT_SINGLE_PANE;
@@ -142,6 +121,39 @@ Preferences::Preferences()
 	if ( !QDir(m_sTmpDirectory).exists() ) {
 		QDir(m_sTmpDirectory).mkdir( m_sTmpDirectory );// create the tmp directory
 	}
+	
+	char * ladpath = getenv( "LADSPA_PATH" );	// read the Environment variable LADSPA_PATH
+	if ( ladpath ) {
+		INFOLOG( "Found LADSPA_PATH environment variable" );
+		QString sLadspaPath = QString::fromLocal8Bit(ladpath);
+		int pos;
+		while ( ( pos = sLadspaPath.indexOf( ":" ) ) != -1 ) {
+			QString sPath = sLadspaPath.left( pos );
+			m_ladspaPathVect.push_back( QFileInfo(sPath).canonicalFilePath() );
+			sLadspaPath = sLadspaPath.mid( pos + 1, sLadspaPath.length() );
+		}
+		m_ladspaPathVect.push_back( QFileInfo(sLadspaPath).canonicalFilePath());
+	} else {
+#ifdef Q_OS_MACX
+		m_ladspaPathVect.push_back( QFileInfo(qApp->applicationDirPath(), "/../Resources/plugins").canonicalFilePath() );
+		m_ladspaPathVect.push_back( QFileInfo("/Library/Audio/Plug-Ins/LADSPA/").canonicalFilePath() );
+		m_ladspaPathVect.push_back( QFileInfo(QDir::homePath(), "/Library/Audio/Plug-Ins/LADSPA").canonicalFilePath() );
+#else
+		m_ladspaPathVect.push_back( QFileInfo("/usr/lib/ladspa").canonicalFilePath() );
+		m_ladspaPathVect.push_back( QFileInfo("/usr/local/lib/ladspa").canonicalFilePath() );
+		m_ladspaPathVect.push_back( QFileInfo("/usr/lib64/ladspa").canonicalFilePath() );
+		m_ladspaPathVect.push_back( QFileInfo("/usr/local/lib64/ladspa").canonicalFilePath() );
+#endif
+	}
+	
+	/*
+	 *  Add .hydrogen/data/plugins to ladspa search path, no matter where LADSPA_PATH points to..
+	 */
+	m_ladspaPathVect.push_back( QFileInfo(m_sDataDirectory, "plugins").canonicalFilePath() );
+	std::sort(m_ladspaPathVect.begin(), m_ladspaPathVect.end());
+
+	auto last = std::unique(m_ladspaPathVect.begin(), m_ladspaPathVect.end(), shouldRemove);
+	m_ladspaPathVect.erase(last, m_ladspaPathVect.end());
 
 	__lastspatternDirectory = QDir::homePath();
 	__lastsampleDirectory = QDir::homePath(); //audio file browser
@@ -213,6 +225,7 @@ Preferences::Preferences()
 
 	// OSC configuration
 	m_bOscServerEnabled = false;
+	m_bOscFeedbackEnabled = true;
 	m_nOscServerPort = 9000;
 
 	// None: m_sDefaultEditor;
@@ -539,6 +552,7 @@ void Preferences::loadPreferences( bool bGlobal )
 					m_bMidiNoteOffIgnore = LocalFileMng::readXmlBool( midiDriverNode, "ignore_note_off", true );
 					m_bMidiDiscardNoteAfterAction = LocalFileMng::readXmlBool( midiDriverNode, "discard_note_after_action", true);
 					m_bMidiFixedMapping = LocalFileMng::readXmlBool( midiDriverNode, "fixed_mapping", false, true );
+					m_bEnableMidiFeedback = LocalFileMng::readXmlBool( midiDriverNode, "enable_midi_feedback", false, true );
 				}
 
 				/// OSC ///
@@ -548,6 +562,7 @@ void Preferences::loadPreferences( bool bGlobal )
 					recreate = true;
 				} else {
 					m_bOscServerEnabled = LocalFileMng::readXmlBool( oscServerNode, "oscEnabled", false );
+					m_bOscFeedbackEnabled = LocalFileMng::readXmlBool( oscServerNode, "oscFeedbackEnabled", true );
 					m_nOscServerPort = LocalFileMng::readXmlInt( oscServerNode, "oscServerPort", 9000 );
 				}
 			}
@@ -928,6 +943,12 @@ void Preferences::savePreferences()
 			} else {
 				LocalFileMng::writeXmlString( midiDriverNode, "ignore_note_off", "false" );
 			}
+			
+			if ( m_bEnableMidiFeedback ) {
+				LocalFileMng::writeXmlString( midiDriverNode, "enable_midi_feedback", "true" );
+			} else {
+				LocalFileMng::writeXmlString( midiDriverNode, "enable_midi_feedback", "false" );
+			}
 
 			if ( m_bMidiDiscardNoteAfterAction ) {
 				LocalFileMng::writeXmlString( midiDriverNode, "discard_note_after_action", "true" );
@@ -954,6 +975,12 @@ void Preferences::savePreferences()
 				LocalFileMng::writeXmlString( oscNode, "oscEnabled", "true" );
 			} else {
 				LocalFileMng::writeXmlString( oscNode, "oscEnabled", "false" );
+			}
+			
+			if ( m_bOscFeedbackEnabled ) {
+				LocalFileMng::writeXmlString( oscNode, "oscFeedbackEnabled", "true" );
+			} else {
+				LocalFileMng::writeXmlString( oscNode, "oscFeedbackEnabled", "false" );
 			}
 		}
 		audioEngineNode.appendChild( oscNode );
@@ -1156,6 +1183,7 @@ void Preferences::createSoundLibraryDirectories()
 	QString sSongDir;
 	QString sPatternDir;
 	QString sPlaylistDir;
+	QString sPluginsDir;
 
 	INFOLOG( "Creating soundLibrary directories in " + sDir );
 
@@ -1163,12 +1191,14 @@ void Preferences::createSoundLibraryDirectories()
 	sSongDir = sDir + "/songs";
 	sPatternDir = sDir + "/patterns";
 	sPlaylistDir = sDir + "/playlists";
+	sPluginsDir = sDir + "/plugins";
 
 	QDir dir;
 	dir.mkdir( sDrumkitDir );
 	dir.mkdir( sSongDir );
 	dir.mkdir( sPatternDir );
 	dir.mkdir( sPlaylistDir );
+	dir.mkdir( sPluginsDir );
 }
 
 

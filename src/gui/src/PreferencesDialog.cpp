@@ -118,6 +118,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent)
 	}
 
 	m_pIgnoreNoteOffCheckBox->setChecked( pPref->m_bMidiNoteOffIgnore );
+	m_pEnableMidiFeedbackCheckBox->setChecked( pPref->m_bEnableMidiFeedback );
 	m_pDiscardMidiMsgCheckbox->setChecked( pPref->m_bMidiDiscardNoteAfterAction );
 	m_pFixedMapping->setChecked( pPref->m_bMidiFixedMapping );
 
@@ -256,6 +257,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent)
 
 	//OSC tab
 	enableOscCheckbox->setChecked( pPref->getOscServerEnabled() );
+	enableOscFeedbackCheckbox->setChecked( pPref->getOscFeedbackEnabled() );
 	connect(enableOscCheckbox, SIGNAL(toggled(bool)), this, SLOT(toggleOscCheckBox( bool )));
 	
 	incomingOscPortSpinBox->setValue( pPref->getOscServerPort() );
@@ -418,7 +420,8 @@ void PreferencesDialog::on_okBtn_clicked()
 	pPref->m_bMidiNoteOffIgnore = m_pIgnoreNoteOffCheckBox->isChecked();
 	pPref->m_bMidiFixedMapping = m_pFixedMapping->isChecked();
 	pPref->m_bMidiDiscardNoteAfterAction = m_pDiscardMidiMsgCheckbox->isChecked();
-
+	pPref->m_bEnableMidiFeedback = m_pEnableMidiFeedbackCheckBox->isChecked();
+			
 	// Mixer falloff
 	QString falloffStr = mixerFalloffComboBox->currentText();
 	if ( falloffStr== trUtf8("Slow") ) {
@@ -448,6 +451,7 @@ void PreferencesDialog::on_okBtn_clicked()
 
 	//OSC tab
 	pPref->setOscServerEnabled( enableOscCheckbox->isChecked() );
+	pPref->setOscFeedbackEnabled( enableOscFeedbackCheckbox->isChecked() );
 	pPref->setOscServerPort( incomingOscPortSpinBox->value() );
 	
 	// General tab

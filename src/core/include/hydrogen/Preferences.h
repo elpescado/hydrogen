@@ -209,9 +209,11 @@ public:
 	bool				m_bMidiNoteOffIgnore;
 	bool				m_bMidiFixedMapping;
 	bool				m_bMidiDiscardNoteAfterAction;
+	bool				m_bEnableMidiFeedback;
 	
 	// OSC Server properties
 	bool				m_bOscServerEnabled;
+	bool				m_bOscFeedbackEnabled;
 	int					m_nOscServerPort;
 
 	//	alsa audio driver properties ___
@@ -399,7 +401,10 @@ public:
 
 	bool				getOscServerEnabled();
 	void				setOscServerEnabled( bool val );
-
+	
+	bool				getOscFeedbackEnabled();
+	void				setOscFeedbackEnabled( bool val );
+	
 	int					getOscServerPort();
 	void				setOscServerPort( int oscPort );
 
@@ -969,6 +974,13 @@ inline bool Preferences::getOscServerEnabled(){
 
 inline void Preferences::setOscServerEnabled( bool val ){
 	m_bOscServerEnabled = val;
+}
+inline bool Preferences::getOscFeedbackEnabled(){
+	return m_bOscFeedbackEnabled;
+}
+
+inline void Preferences::setOscFeedbackEnabled( bool val ){
+	m_bOscFeedbackEnabled = val;
 }
 
 inline int Preferences::getOscServerPort(){

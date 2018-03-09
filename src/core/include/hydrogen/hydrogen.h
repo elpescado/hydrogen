@@ -33,6 +33,7 @@
 #include <hydrogen/IO/MidiInput.h>
 #include <hydrogen/IO/MidiOutput.h>
 #include <hydrogen/basics/drumkit.h>
+#include <hydrogen/core_action_controller.h>
 #include <cassert>
 #include <hydrogen/timehelper.h>
 
@@ -184,6 +185,7 @@ public:
 #endif
 
 #ifdef H2CORE_HAVE_OSC
+	void			startOscServer();
 	void			startNsmClient();
 #endif
 
@@ -232,6 +234,14 @@ public:
 	void			stopExportSession();
 	void			startExportSong( const QString& filename );
 	void			stopExportSong();
+	
+	CoreActionController* getCoreActionController() const;
+
+	///playback track
+	void			setPlaybackTrackState(bool);
+	bool			getPlaybackTrackState();
+	void			loadPlaybackTrack(QString filename);
+
 
 	///midi lookuptable
 	int m_nInstrumentLookupTable[MAX_INSTRUMENTS];
@@ -270,6 +280,8 @@ private:
 	//Timline information
 	Timeline*		m_pTimeline;
 	
+	CoreActionController* m_pCoreActionController;
+	
 	
 	std::list<Instrument*> __instrument_death_row; /// Deleting instruments too soon leads to potential crashes.
 
@@ -290,6 +302,12 @@ inline Timeline* Hydrogen::getTimeline() const
 	return m_pTimeline;
 }
 
+inline CoreActionController* Hydrogen::getCoreActionController() const
+{
+	return m_pCoreActionController;
+}
+
+
 inline const QString& Hydrogen::getCurrentDrumkitname()
 {
 	return m_currentDrumkit;
@@ -304,6 +322,20 @@ inline void Hydrogen::setCurrentDrumkitname( const QString& currentdrumkitname )
 {
 	this->m_currentDrumkit = currentdrumkitname;
 }
+
+inline bool Hydrogen::getPlaybackTrackState()
+{
+	Song* pSong = getSong();
+	bool  bState;
+
+	if(!pSong){
+		bState = false;
+	} else {
+		bState = pSong->get_playback_track_enabled();
+	}
+	return 	bState;
+}
+
 
 };
 
