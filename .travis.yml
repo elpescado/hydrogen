@@ -32,6 +32,7 @@ addons:
 before_install:
     #  - export MACOSX_DEPLOYMENT_TARGET="10.10"
   - xcodebuild -showsdks
+  - sudo ln -s /usr/local /opt/local
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install ladspa-sdk -y; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
@@ -48,7 +49,7 @@ before_install:
 script:
   - mkdir build && cd build && cmake -DWANT_LASH=1 -DWANT_LRDF=1 -DWANT_RUBBERBAND=1 .. && make VERBOSE=1
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then PATH="$(brew --prefix qt5)/bin:$PATH" ../macos/build_dmg.sh -v src/gui/hydrogen.app Hydrogen.dmg; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then otool -l src/gui/hydrogen.app/Contents/MacOS/hydrogen ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then otool -l src/gui/hydrogen.app/Contents/MacOS/hydrogen | grep -B 1 -A 3 LC_VERSION_MIN_MACOSX ; fi
 
 
 # deploy:
