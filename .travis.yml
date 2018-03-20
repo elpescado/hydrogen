@@ -30,7 +30,7 @@ addons:
       - librubberband-dev
 
 before_install:
-  - export MACOSX_DEPLOYMENT_TARGET="10.10"
+    #  - export MACOSX_DEPLOYMENT_TARGET="10.10"
   - xcodebuild -showsdks
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install ladspa-sdk -y; fi
