@@ -61,6 +61,9 @@ void H2Test::checkAudioFilesEqual(const QString &expected, const QString &actual
 
 	auto remainingSamples = info1.frames * info1.channels;
 	auto offset = 0LL;
+	int diff = 0;
+	int difft = 0;
+	int diffn = 0;
 	while ( remainingSamples > 0 ) {
 		short buf1[ BUFFER_SIZE ];
 		short buf2[ BUFFER_SIZE ];
@@ -75,11 +78,14 @@ void H2Test::checkAudioFilesEqual(const QString &expected, const QString &actual
 		for ( sf_count_t i = 0; i < toRead; ++i ) {
 			if ( buf1[i] != buf2[i] ) {
 				auto diffLocation = offset + i + 1;
+				diff = qMax(diff, qAbs(buf1[i] - buf2[i]));
+				difft += diff;
+				diffn++;
 				CppUnit::Message msg(
 					std::string("Files differ at sample ") + std::to_string(diffLocation),
 					std::string("Expected: ") + expected.toStdString(),
 					std::string("Actual  : ") + actual.toStdString() );
-				throw CppUnit::Exception(msg, sourceLine);
+				//throw CppUnit::Exception(msg, sourceLine);
 
 			}
 		}
@@ -87,4 +93,82 @@ void H2Test::checkAudioFilesEqual(const QString &expected, const QString &actual
 		offset += read1;
 		remainingSamples -= read1;
 	}
+	std::cout << "Max diff = " << diff << std::endl;
+	std::cout << " samples = " << diffn << std::endl;
+	std::cout << "    avg1 = " << ((double)difft/(double)diffn) << std::endl;
+	std::cout << "    avg2 = " << ((double)difft/(double)(info1.frames * info1.channels)) << std::endl;
+}
+
+void H2Test::checkAudioFilesSimilar(const QString &expected, const QString &actual, CppUnit::SourceLine sourceLine)
+{
+	SF_INFO info1 = {0};
+	std::unique_ptr<SNDFILE, decltype(&sf_close)>
+		f1{ sf_open( expected.toLocal8Bit().data(), SFM_READ, &info1), sf_close };
+	if ( f1 == nullptr ) {
+		CppUnit::Message msg(
+			"Can't open reference file",
+			sf_strerror( NULL )
+		);
+		throw CppUnit::Exception(msg, sourceLine);
+	}
+
+	SF_INFO info2 = {0};
+	std::unique_ptr<SNDFILE, decltype(&sf_close)>
+		f2{ sf_open( actual.toLocal8Bit().data(), SFM_READ, &info2), sf_close };
+	if ( f2 == nullptr ) {
+		CppUnit::Message msg(
+			"Can't open results file",
+			sf_strerror( NULL )
+		);
+		throw CppUnit::Exception(msg, sourceLine);
+	}
+
+	if ( info1.frames != info2.frames ) {
+		CppUnit::Message msg(
+			"Number of samples different",
+			std::string("Expected: ") + expected.toStdString(),
+			std::string("Actual  : ") + actual.toStdString() );
+		throw CppUnit::Exception(msg, sourceLine);
+	}
+
+	auto remainingSamples = info1.frames * info1.channels;
+	auto offset = 0LL;
+	double diff = 0;
+	double difft = 0;
+	double diffn = 0;
+	while ( remainingSamples > 0 ) {
+		float buf1[ BUFFER_SIZE ];
+		float buf2[ BUFFER_SIZE ];
+		auto toRead = qMin( remainingSamples, (sf_count_t)BUFFER_SIZE );
+
+		auto read1 = sf_read_float( f1.get(), buf1, toRead);
+		if ( read1 != toRead ) throw CppUnit::Exception( CppUnit::Message( "Short read or read error" ), sourceLine );
+
+		auto read2= sf_read_float( f2.get(), buf2, toRead);
+		if ( read2 != toRead ) throw CppUnit::Exception( CppUnit::Message( "Short read or read error" ), sourceLine );
+
+		for ( sf_count_t i = 0; i < toRead; ++i ) {
+			if ( buf1[i] != buf2[i] ) {
+				auto diffLocation = offset + i + 1;
+				diff = qMax(diff, qAbs((double)(buf1[i] - buf2[i])));
+				difft += diff;
+				diffn++;
+				CppUnit::Message msg(
+					std::string("Files differ at sample ") + std::to_string(diffLocation),
+					std::string("Expected: ") + expected.toStdString(),
+					std::string("Actual  : ") + actual.toStdString() );
+				//throw CppUnit::Exception(msg, sourceLine);
+
+			}
+		}
+
+		offset += read1;
+		remainingSamples -= read1;
+	}
+	std::cout << "---\n";
+	std::cout << expected.toStdString() << " vs " << actual.toStdString() << std::endl;
+	std::cout << "Max diff = " << diff << std::endl;
+	std::cout << " samples = " << diffn << std::endl;
+	std::cout << "    avg1 = " << ((double)difft/(double)diffn) << std::endl;
+	std::cout << "    avg2 = " << ((double)difft/(double)(info1.frames * info1.channels)) << std::endl;
 }

@@ -104,14 +104,74 @@ void exportMIDI( const QString &songFile, const QString &fileName )
 
 class FunctionalTest : public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE( FunctionalTest );
+//	/*
 	CPPUNIT_TEST( testExportAudio );
 	CPPUNIT_TEST( testExportMIDI );
 	CPPUNIT_TEST( testExportMuteGroupsAudio );
 	CPPUNIT_TEST( testExportVelocityAutomationAudio );
 	CPPUNIT_TEST( testExportVelocityAutomationMIDI );
+//	*/
+//	/*
+	CPPUNIT_TEST( testNotExists );
+	CPPUNIT_TEST( testActualNotExists );
+	CPPUNIT_TEST( testEqual );
+	CPPUNIT_TEST( testEqualFlac );
+	CPPUNIT_TEST( testNotEqual );
+	CPPUNIT_TEST( testNotEqualLength );
+	CPPUNIT_TEST( testNotEqualLengthX );
+//	*/
+	CPPUNIT_TEST( testAlmostEqual );
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
+
+	void testNotExists()
+	{
+		CPPUNIT_ASSERT_THROW(
+			H2TEST_ASSERT_AUDIO_FILES_EQUAL( "not_exists.wav", "not_exists.wav" ),
+			CppUnit::Exception
+		);
+	}
+
+	void testActualNotExists()
+	{
+		CPPUNIT_ASSERT_THROW(
+			H2TEST_ASSERT_AUDIO_FILES_EQUAL( "4snares.wav", "not_exists.wav" ),
+			CppUnit::Exception
+		);
+	}
+
+	void testEqual() {
+		H2TEST_ASSERT_AUDIO_FILES_EQUAL( "4snares.wav", "4snares.wav" );
+	}
+
+	void testEqualFlac() {
+		H2TEST_ASSERT_AUDIO_FILES_EQUAL( "4snares.wav", "4snares.flac" );
+	}
+
+	void testNotEqual() {
+		CPPUNIT_ASSERT_THROW(
+			H2TEST_ASSERT_AUDIO_FILES_EQUAL( "4snares.wav", "3snares.wav" ),
+			CppUnit::Exception
+		);
+	}
+
+	void testNotEqualLength() {
+		CPPUNIT_ASSERT_THROW(
+			H2TEST_ASSERT_AUDIO_FILES_EQUAL( "4snares.wav", "8snares.wav" ),
+			CppUnit::Exception
+		);
+	}
+
+	void testNotEqualLengthX() {
+			H2TEST_ASSERT_AUDIO_FILES_EQUAL( "8snaresx1.wav", "8snaresx2.wav" );
+	}
+
+	void testAlmostEqual() {
+			H2TEST_ASSERT_AUDIO_FILES_EQUAL( "at1.wav", "at2.wav" );
+			H2TEST_ASSERT_AUDIO_FILES_EQUAL( "at1.wav", "at3.wav" );
+	}
+
 
 	void testExportAudio()
 	{
