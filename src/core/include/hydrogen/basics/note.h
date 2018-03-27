@@ -320,12 +320,6 @@ class Note : public H2Core::Object
 inline ADSR* Note::get_adsr() const
 {
 	assert(__adsr);
-	std::cerr << "ADSR("
-		<< __adsr->get_attack() << ", "
-		<< __adsr->get_decay() << ", "
-		<< __adsr->get_sustain() << ", "
-		<< __adsr->get_release() << ", "
-		<< ")\n";
 	return __adsr;
 }
 
