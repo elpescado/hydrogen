@@ -43,6 +43,7 @@
 #define PAN_MAX                 0.5f
 #define LEAD_LAG_MIN            -1.0f
 #define LEAD_LAG_MAX            1.0f
+#include <cassert>
 
 namespace H2Core
 {
@@ -317,6 +318,7 @@ class Note : public H2Core::Object
 
 inline ADSR* Note::get_adsr() const
 {
+	assert(__adsr);
 	return __adsr;
 }
 
