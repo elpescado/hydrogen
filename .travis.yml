@@ -45,10 +45,11 @@ before_install:
 
 script:
   - "mkdir -p build && cd build && cmake -DWANT_LASH=1 -DWANT_LRDF=1 -DWANT_RUBBERBAND=1 .. && make"
-  - src/tests/tests
+  - TMPDIR=/tmp src/tests/tests
 
 addons:
   artifacts:
     s3_region: "eu-central-1"
     paths:
+      - "build/CMakeFiles/CMakeOutput.log"
       - "/tmp/hydrogen"
