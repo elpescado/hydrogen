@@ -44,6 +44,7 @@
 #define LEAD_LAG_MIN            -1.0f
 #define LEAD_LAG_MAX            1.0f
 #include <cassert>
+#include <iostream>
 
 namespace H2Core
 {
@@ -319,6 +320,12 @@ class Note : public H2Core::Object
 inline ADSR* Note::get_adsr() const
 {
 	assert(__adsr);
+	std::cerr << "ADSR("
+		<< __adsr->get_attack() << ", "
+		<< __adsr->get_decay() << ", "
+		<< __adsr->get_sustain() << ", "
+		<< __adsr->get_release() << ", "
+		<< ")\n";
 	return __adsr;
 }
 
