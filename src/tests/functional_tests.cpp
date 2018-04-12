@@ -23,11 +23,18 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <QString>
+#include <QFileInfo>
 #include <hydrogen/basics/song.h>
 #include <hydrogen/event_queue.h>
 #include <hydrogen/helpers/filesystem.h>
 #include <hydrogen/hydrogen.h>
 #include <hydrogen/basics/instrument_list.h>
+#include <hydrogen/basics/song.h>
+#include <hydrogen/basics/instrument.h>
+#include <hydrogen/basics/instrument_list.h>
+#include <hydrogen/basics/pattern_list.h>
+#include <hydrogen/basics/pattern.h>
+
 #include <hydrogen/basics/instrument.h>
 #include <hydrogen/smf/SMF.h>
 #include "test_helper.h"
@@ -38,6 +45,69 @@
 #include <memory>
 
 using namespace H2Core;
+
+bool instrumentHasNotes(int idx)
+{
+
+	Hydrogen *pEngine = Hydrogen::get_instance();
+	Song *pSong = pEngine->getSong();
+	unsigned nPatterns = pSong->get_pattern_list()->size();
+	
+	auto instrId = pSong->get_instrument_list()->get(idx)->get_id();
+	bool bInstrumentHasNotes = false;
+	
+	for ( unsigned i = 0; i < nPatterns; i++ ) {
+		Pattern *pPattern = pSong->get_pattern_list()->get( i );
+		const Pattern::notes_t* notes = pPattern->get_notes();
+		FOREACH_NOTE_CST_IT_BEGIN_END(notes,it) {
+			Note *pNote = it->second;
+			assert( pNote );
+
+			if( pNote->get_instrument()->get_id() == instrId ){
+				bInstrumentHasNotes = true;
+				break;
+			}
+		}
+	}
+	
+	return bInstrumentHasNotes;
+}
+
+
+void exportTrackouts(Song *pSong, const QString &fileName)
+{
+	Hydrogen *pHydrogen = Hydrogen::get_instance();
+	EventQueue *pQueue = EventQueue::get_instance();
+	InstrumentList *pInstrumentList = pSong->get_instrument_list();
+	QFileInfo fi(fileName);
+	for (auto i = 0; i < pInstrumentList->size(); i++) {
+		InstrumentList *pInstrumentList = pSong->get_instrument_list();
+
+		if (! instrumentHasNotes(i))
+			continue;
+
+		for (auto j = 0; j < pInstrumentList->size(); j++) {
+			pInstrumentList->get(i)->set_currently_exported( i == j );
+		}
+
+		pHydrogen->startExportSession( 44100, 16 );
+		pHydrogen->startExportSong( QString("%1/%2_%3.%4").arg(fi.path()).arg(fi.completeBaseName()).arg(i).arg(fi.suffix()) );
+
+		bool done = false;
+		while ( ! done ) {
+			Event event = pQueue->pop_event();
+
+			if (event.type == EVENT_PROGRESS && event.value == 100) {
+				done = true;
+			}
+			else {
+				usleep(100 * 1000);
+			}
+		}
+		pHydrogen->stopExportSession();
+	}
+}
+
 
 /**
  * \brief Export Hydrogon song to audio file
@@ -76,6 +146,8 @@ void exportSong( const QString &songFile, const QString &fileName )
 	}
 	pHydrogen->stopExportSession();
 
+	exportTrackouts(pSong, fileName );
+
 	auto t1 = std::chrono::high_resolution_clock::now();
 	double t = std::chrono::duration<double>( t1 - t0 ).count();
 	___INFOLOG( QString("Audio export took %1 seconds").arg(t) );
@@ -107,9 +179,12 @@ class FunctionalTest : public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE( FunctionalTest );
 	CPPUNIT_TEST( testExportAudio );
 	CPPUNIT_TEST( testExportMIDI );
-//	CPPUNIT_TEST( testExportMuteGroupsAudio ); // SKIP
+	CPPUNIT_TEST( testExportMuteGroupsAudio ); // SKIP
 	CPPUNIT_TEST( testExportVelocityAutomationAudio );
 	CPPUNIT_TEST( testExportVelocityAutomationMIDI );
+	CPPUNIT_TEST( testExport1Audio );
+	CPPUNIT_TEST( testExport2Audio );
+	CPPUNIT_TEST( testExport3Audio );
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
@@ -122,7 +197,7 @@ class FunctionalTest : public CppUnit::TestCase {
 
 		exportSong( songFile, outFile );
 		H2TEST_ASSERT_AUDIO_FILES_EQUAL( refFile, outFile );
-		Filesystem::rm( outFile );
+//		Filesystem::rm( outFile );
 	}
 
 	void testExportMIDI()
@@ -133,9 +208,9 @@ class FunctionalTest : public CppUnit::TestCase {
 
 		exportMIDI( songFile, outFile );
 		H2TEST_ASSERT_FILES_EQUAL( refFile, outFile );
-		Filesystem::rm( outFile );
+//		Filesystem::rm( outFile );
 	}
-/* SKIP
+// /* SKIP
 	void testExportMuteGroupsAudio()
 	{
 		auto songFile = H2TEST_FILE("functional/mutegroups.h2song");
@@ -144,9 +219,9 @@ class FunctionalTest : public CppUnit::TestCase {
 
 		exportSong( songFile, outFile );
 		H2TEST_ASSERT_AUDIO_FILES_EQUAL( refFile, outFile );
-		Filesystem::rm( outFile );
+//		Filesystem::rm( outFile );
 	}
-*/
+// */
 	void testExportVelocityAutomationAudio()
 	{
 		auto songFile = H2TEST_FILE("functional/velocityautomation.h2song");
@@ -155,7 +230,7 @@ class FunctionalTest : public CppUnit::TestCase {
 
 		exportSong( songFile, outFile );
 		H2TEST_ASSERT_AUDIO_FILES_EQUAL( refFile, outFile );
-		Filesystem::rm( outFile );
+//		Filesystem::rm( outFile );
 	}
 
 	void testExportVelocityAutomationMIDI()
@@ -166,7 +241,38 @@ class FunctionalTest : public CppUnit::TestCase {
 
 		exportMIDI( songFile, outFile );
 		H2TEST_ASSERT_FILES_EQUAL( refFile, outFile );
-		Filesystem::rm( outFile );
+//		Filesystem::rm( outFile );
+	}
+
+	void testExport1Audio()
+	{
+		auto songFile = H2TEST_FILE("functional/tst1.h2song");
+		auto outFile = Filesystem::tmp_file("tst1.wav");
+		auto refFile = H2TEST_FILE("functional/tst1.ref.wav");
+
+		exportSong( songFile, outFile );
+		H2TEST_ASSERT_AUDIO_FILES_EQUAL( refFile, outFile );
+//		Filesystem::rm( outFile );
+	}
+	void testExport2Audio()
+	{
+		auto songFile = H2TEST_FILE("functional/tst2.h2song");
+		auto outFile = Filesystem::tmp_file("tst2.wav");
+		auto refFile = H2TEST_FILE("functional/tst2.ref.wav");
+
+		exportSong( songFile, outFile );
+		H2TEST_ASSERT_AUDIO_FILES_EQUAL( refFile, outFile );
+//		Filesystem::rm( outFile );
+	}
+	void testExport3Audio()
+	{
+		auto songFile = H2TEST_FILE("functional/tst3.h2song");
+		auto outFile = Filesystem::tmp_file("tst3.wav");
+		auto refFile = H2TEST_FILE("functional/tst3.ref.wav");
+
+		exportSong( songFile, outFile );
+		H2TEST_ASSERT_AUDIO_FILES_EQUAL( refFile, outFile );
+//		Filesystem::rm( outFile );
 	}
 
 };
