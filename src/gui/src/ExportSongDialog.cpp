@@ -45,6 +45,7 @@
 #include <hydrogen/audio_engine.h>
 #include <hydrogen/sampler/Sampler.h>
 #include <hydrogen/event_queue.h>
+#include <hydrogen/exporter.h>
 
 #include <memory>
 
@@ -278,46 +279,13 @@ void ExportSongDialog::on_okBtn_clicked()
 bool ExportSongDialog::currentInstrumentHasNotes()
 {
 	Song *pSong = m_pEngine->getSong();
-	unsigned nPatterns = pSong->get_pattern_list()->size();
-	
-	bool bInstrumentHasNotes = false;
-	
-	for ( unsigned i = 0; i < nPatterns; i++ ) {
-		Pattern *pPattern = pSong->get_pattern_list()->get( i );
-		const Pattern::notes_t* notes = pPattern->get_notes();
-		FOREACH_NOTE_CST_IT_BEGIN_END(notes,it) {
-			Note *pNote = it->second;
-			assert( pNote );
-
-			if( pNote->get_instrument()->get_id() == pSong->get_instrument_list()->get(m_nInstrument)->get_id() ){
-				bInstrumentHasNotes = true;
-				break;
-			}
-		}
-	}
-	
-	return bInstrumentHasNotes;
+	return Exporter::instrument_has_notes(pSong, m_nInstrument);
 }
 
 QString ExportSongDialog::findUniqueExportFilenameForInstrument(Instrument* pInstrument)
 {
 	Song *pSong = m_pEngine->getSong();
-	QString uniqueInstrumentName;
-	
-	int instrumentOccurence = 0;
-	for(int i=0; i  < pSong->get_instrument_list()->size(); i++ ){
-		if( pSong->get_instrument_list()->get(m_nInstrument)->get_name() == pInstrument->get_name()){
-			instrumentOccurence++;
-		}
-	}
-	
-	if(instrumentOccurence >= 2){
-		uniqueInstrumentName = pInstrument->get_name() + QString("_") + QString::number( pInstrument->get_id() );
-	} else {
-		uniqueInstrumentName = pInstrument->get_name();
-	}
-	
-	return uniqueInstrumentName;
+	return Exporter::find_unique_export_filename_for_instrument(pSong, pInstrument);
 }
 
 void ExportSongDialog::exportTracks()
