@@ -20,10 +20,10 @@
  *
  */
 
+#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 
 //#include <hydrogen/helpers/xml.h>
-#include <hydrogen/basics/pattern.h>
 
 namespace H2Core
 {

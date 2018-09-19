@@ -328,5 +328,11 @@ inline bool Hydrogen::getPlaybackTrackState()
 
 };
 
+#ifdef Q_CC_MSVC
+#  define strcasecmp _stricmp
+#  define strncasecmp _strnicmp
+#endif
+
+
 #endif
 

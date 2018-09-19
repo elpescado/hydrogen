@@ -197,7 +197,11 @@ FIND_HELPER(LIBARCHIVE libarchive archive.h archive)
 IF( WANT_LIBARCHIVE AND LIBARCHIVE_FOUND)
     SET(WANT_LIBTAR FALSE)
 ENDIF()
-FIND_HELPER(LIBSNDFILE sndfile sndfile.h sndfile)
+IF( DEFINED ENV{APPVEYOR} )
+    find_package(LibSndFile CONFIG REQUIRED)
+ELSE()
+    FIND_HELPER(LIBSNDFILE sndfile sndfile.h sndfile)
+ENDIF()
 FIND_HELPER(ALSA alsa alsa/asoundlib.h asound )
 FIND_LADSPA(LADSPA ladspa.h noise)
 
@@ -226,6 +230,8 @@ FIND_HELPER(LRDF lrdf lrdf.h lrdf)
 
 FIND_HELPER(RUBBERBAND rubberband rubberband/RubberBandStretcher.h rubberband)
 FIND_HELPER(CPPUNIT cppunit cppunit/TestCase.h cppunit)
+
+find_package(pthreads)
 
 
 # Find includes in corresponding build directories
@@ -317,7 +323,13 @@ COLOR_MESSAGE("${cyan}Usefull extensions${reset}
 * ${purple}LASH${reset}                         : ${LASH_STATUS}
 * ${purple}LRDF${reset}                         : ${LRDF_STATUS}
 * ${purple}RUBBERBAND${reset}                   : ${RUBBERBAND_STATUS}
-*                                ${LIBRUBBERBAND_MSG}\n"
+*                                ${LIBRUBBERBAND_MSG}
+
+sndfile    ${SNDFILE_STATUS} ${SNDFILE_FOUND} ${SNDFILE_LIBRARIES}
+libsndfile ${LIBSNDFILE_STATUS} ${LIBSNDFILE_FOUND} ${LIBSNDFILE_LIBRARIES}
+pthreads   ${PTHREADS_STATUS} ${PTHREADS_FOUND} ${PTHREADS_LIBRARIES}
+winpthreads   ${WINPTHREADS_STATUS} ${WINPTHREADS_FOUND} ${WINPTHREADS_LIBRARIES}
+\n"
 )
 
 IF(WANT_DEBUG)

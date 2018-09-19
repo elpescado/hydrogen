@@ -25,6 +25,7 @@
 #ifdef H2CORE_HAVE_PULSEAUDIO
 
 #include <fcntl.h>
+#include <unistd.h>
 #include <hydrogen/Preferences.h>
 
 

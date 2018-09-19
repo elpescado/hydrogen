@@ -20,6 +20,7 @@
  *
  */
 
+#include <hydrogen/basics/pattern.h>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -40,7 +41,6 @@
 #include <hydrogen/Preferences.h>
 #include <hydrogen/basics/sample.h>
 #include <hydrogen/basics/song.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/helpers/filesystem.h>
 #include <hydrogen/event_queue.h>
@@ -49,6 +49,7 @@
 #include <hydrogen/sampler/Sampler.h>
 
 #include <iostream>
+#include <vector>
 #include <QDebug>
 
 namespace H2Core
@@ -265,7 +266,8 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 		return 1;
 	}
 
-	bool nReturnValues [pInstr->get_components()->size()];
+	std::vector<bool> nReturnValues( pInstr->get_components()->size(), false );
+	//bool nReturnValues [pInstr->get_components()->size()];
 	
 	for(int i = 0; i < pInstr->get_components()->size(); i++){
 		nReturnValues[i] = false;
@@ -346,7 +348,8 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 						}
 					}
 					if( pSample == NULL ) {
-						int __possibleIndex[ __maxLayers ];
+						//int __possibleIndex[ __maxLayers ];
+						std::vector<int> __possibleIndex( __maxLayers, 0 );
 						int __poundSamples = 0;
 						for ( unsigned nLayer = 0; nLayer < __maxLayers; ++nLayer ) {
 							InstrumentLayer *pLayer = pCompo->get_layer( nLayer );
@@ -383,7 +386,8 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 						}
 					}
 					if( !pSample ) {
-						int __possibleIndex[ __maxLayers ];
+						//int __possibleIndex[ __maxLayers ];
+						std::vector<int> __possibleIndex( __maxLayers, 0 );
 						int __foundSamples = 0;
 						float __roundRobinID;
 						for ( unsigned nLayer = 0; nLayer < __maxLayers; ++nLayer ) {

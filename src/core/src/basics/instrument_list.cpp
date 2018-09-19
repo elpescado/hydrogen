@@ -20,12 +20,13 @@
  *
  */
 
+#include <set>
+
 #include <hydrogen/basics/instrument_list.h>
 
 #include <hydrogen/helpers/xml.h>
 #include <hydrogen/basics/instrument.h>
 
-#include <set>
 
 namespace H2Core
 {

@@ -20,14 +20,10 @@
  *
  */
 
+#include "hydrogen/compat.h"
+#include <hydrogen/basics/pattern.h>
 #include "hydrogen/config.h"
 
-#ifdef WIN32
-#    include "hydrogen/timehelper.h"
-#else
-#    include <unistd.h>
-#    include <sys/time.h>
-#endif
 
 #include <pthread.h>
 #include <cassert>
@@ -56,7 +52,6 @@
 #include <hydrogen/basics/sample.h>
 #include <hydrogen/basics/automation_path.h>
 #include <hydrogen/hydrogen.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/basics/note.h>
 #include <hydrogen/helpers/filesystem.h>
@@ -91,6 +86,12 @@
 #include <hydrogen/IO/CoreAudioDriver.h>
 #include <hydrogen/IO/PulseAudioDriver.h>
 
+#ifdef WIN32
+#    include "hydrogen/timehelper.h"
+#else
+#    include <unistd.h>
+#    include <sys/time.h>
+#endif
 namespace H2Core
 {
 

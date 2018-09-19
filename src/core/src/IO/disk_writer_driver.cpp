@@ -19,14 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-#include <unistd.h>
+//#include <unistd.h>
 
 
+#include <hydrogen/basics/pattern.h>
 #include <hydrogen/Preferences.h>
 #include <hydrogen/event_queue.h>
 #include <hydrogen/hydrogen.h>
 #include <hydrogen/timeline.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/IO/DiskWriterDriver.h>
 
@@ -43,6 +43,8 @@
  * This way SleepEx always returns 0, after the specified time has passed.
  */
 #define sleep( SECONDS ) SleepEx( SECONDS * 1000, false )
+#else
+#  include <unistd.h>
 #endif
 
 namespace H2Core

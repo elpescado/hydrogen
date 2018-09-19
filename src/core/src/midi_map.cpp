@@ -154,7 +154,7 @@ void MidiMap::registerNoteEvent( int note, Action* pAction )
  */
 void MidiMap::registerCCEvent( int parameter , Action * pAction ){
 	QMutexLocker mx(&__mutex);
-	if( parameter >= 0 and parameter < 128 )
+	if( parameter >= 0 && parameter < 128 )
 	{
 		delete __cc_array[ parameter ];
 		__cc_array[ parameter ] = pAction;
