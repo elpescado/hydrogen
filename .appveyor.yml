@@ -1,11 +1,11 @@
 environment:
-  QTDIR: "C:\\Qt\\5.11.1\\msvc2017_64"
-  CMAKE_PREFIX_PATH: "C:\\Qt\\5.11.1\\msvc2017_64"
+  QTDIR: "C:\\Qt\\5.11.1\\msvc2015"
+  CMAKE_PREFIX_PATH: "C:\\Qt\\5.11.1\\msvc2015"
   
   #VCPKG_DEFAULT_TRIPLET: "x64-windows"
 
 image:
-  - "Visual Studio 2017"
+  - "Visual Studio 2015"
 
 before_build:
   cmd: |-
@@ -14,7 +14,7 @@ before_build:
       mkdir build
       cd build
       cmake --version
-      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Visual Studio 15 2017 Win64" ..
+      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Visual Studio 15 2015" ..
 
 build:
   verbosity: detailed
