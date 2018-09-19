@@ -18,3 +18,9 @@ before_build:
 
 build:
   verbosity: detailed
+
+build_script:
+  - cmd: cmake --build . --target ALL_BUILD 
+
+cache:
+  - C:\tools\vcpkg\installed -> .appveyor.yml
