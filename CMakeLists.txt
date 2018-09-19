@@ -195,7 +195,7 @@ IF( WANT_LIBARCHIVE AND LIBARCHIVE_FOUND)
 ENDIF()
 find_package(LibSndFile CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE sndfile-shared)
-FIND_HELPER(LIBSNDFILE sndfile sndfile.h sndfile)
+#FIND_HELPER(LIBSNDFILE sndfile sndfile.h sndfile)
 FIND_HELPER(ALSA alsa alsa/asoundlib.h asound )
 FIND_LADSPA(LADSPA ladspa.h noise)
 
