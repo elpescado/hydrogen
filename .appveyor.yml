@@ -14,7 +14,7 @@ before_build:
       mkdir build
       cd build
       cmake --version
-      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Visual Studio 15 2015" ..
+      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Visual Studio 14 2015" ..
 
 build:
   verbosity: detailed
