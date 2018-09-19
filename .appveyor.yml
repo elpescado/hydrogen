@@ -9,7 +9,7 @@ image:
 
 before_build:
   cmd: |-
-      vcpkg install libarchive libsndfile portaudio cppunit
+      vcpkg install libarchive libsndfile portaudio pthreads cppunit
       vcpkg integrate install
       mkdir build
       cd build
@@ -20,7 +20,7 @@ build:
   verbosity: detailed
 
 build_script:
-  - cmd: cmake --build . --target ALL_BUILD 
+  - cmd: cmake --build . --target ALL_BUILD -- /maxcpucount:4
 
 cache:
   - C:\tools\vcpkg\installed -> .appveyor.yml
