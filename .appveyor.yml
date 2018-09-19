@@ -1,6 +1,7 @@
 environment:
   QTDIR: "C:\\Qt\\5.11.1\\msvc2017_64"
   CMAKE_PREFIX_PATH: "C:\\Qt\\5.11.1\\msvc2017_64"
+  VCPKG_DEFAULT_TRIPLET: "x64-windows"
 
 image:
   - "Visual Studio 2017"
