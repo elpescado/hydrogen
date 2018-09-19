@@ -8,8 +8,8 @@ image:
 
 before_build:
   cmd: |-
-      vcpkg integrate install
       vcpkg install libarchive libsndfile portaudio cppunit
+      vcpkg integrate install
       mkdir build
       cd build
       cmake --version
