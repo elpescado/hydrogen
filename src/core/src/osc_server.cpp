@@ -25,7 +25,7 @@
 #include "hydrogen/Preferences.h"
 
 #include <pthread.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 //currently H2CORE_HAVE_OSC means: liblo is present..
 #ifdef H2CORE_HAVE_OSC
