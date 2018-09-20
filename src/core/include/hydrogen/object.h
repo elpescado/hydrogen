@@ -27,7 +27,7 @@
 #include "hydrogen/config.h"
 #include "hydrogen/globals.h"
 
-#include <unistd.h>
+//#include <unistd.h>
 #include <iostream>
 #include <QtCore>
 
