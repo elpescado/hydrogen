@@ -1,26 +1,42 @@
 environment:
-  QTDIR: "C:\\Qt\\5.11.1\\msvc2015"
-  CMAKE_PREFIX_PATH: "C:\\Qt\\5.11.1\\msvc2015"
-  
   #VCPKG_DEFAULT_TRIPLET: "x64-windows"
+  matrix:
+    - ENV_NAME: MinGW 32
+      COMPILER: MinGW
+      QTDIR: "C:\\Qt\\5.11.1\\mingw53_32"
+      GENERATOR: "MinGW Makefiles"
+      SDK: "C:\\mingw-w64\\i686-5.3.0-posix-dwarf-rt_v4-rev0\\mingw32\\bin"
+
+    - ENV_NAME: MSVC 32
+      COMPILER: MSVC
+      QTDIR: "C:\\Qt\\5.11.1\\msvc2015"
+      GENERATOR: "Visual Studio 14 2015"
+      SDK: ""
 
 image:
   - "Visual Studio 2015"
 
 before_build:
   cmd: |-
+      set CMAKE_PREFIX_PATH=%QTDIR%
+      set PATH=%SDK%;%PATH%
+      rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
+
       vcpkg install libarchive libsndfile portaudio pthreads cppunit
       vcpkg integrate install
       mkdir build
       cd build
       cmake --version
-      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Visual Studio 14 2015" ..
+      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
 
 build:
   verbosity: detailed
 
 build_script:
-  - cmd: cmake --build . --target ALL_BUILD -- /maxcpucount:4
+  - cmd: |-
+      if [%COMPILER%]==[MSVC]  cmake --build . --target ALL_BUILD -- /maxcpucount:4
+      if [%COMPILER%]==[MinGW] cmake --build . 
+
 
 cache:
   - C:\tools\vcpkg\installed -> .appveyor.yml
