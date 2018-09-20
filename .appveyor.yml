@@ -13,6 +13,18 @@ environment:
       GENERATOR: "Visual Studio 14 2015"
       SDK: ""
 
+    - ENV_NAME: MSVC 64
+      COMPILER: MSVC
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PLATFORM: x64
+      VCPKG_DEFAULT_TRIPLET: "x64-windows"
+      QTDIR: "C:\Qt\5.11.1\msvc2017_64"
+      GENERATOR: "Visual Studio 15 2017 Win64"
+      SDK: ""
+
+
+      "C:\Qt\5.11.1\msvc2017_64"
+
 image:
   - "Visual Studio 2015"
 
