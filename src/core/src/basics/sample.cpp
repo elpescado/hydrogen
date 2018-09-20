@@ -20,8 +20,6 @@
  *
  */
 
-
-
 #include <limits>
 
 #include <hydrogen/hydrogen.h>
@@ -33,6 +31,10 @@
 #include <rubberband/RubberBandStretcher.h>
 #define RUBBERBAND_BUFFER_OVERSIZE  500
 #define RUBBERBAND_DEBUG            0
+#endif
+
+#ifdef Q_CC_MSVC
+#  undef max
 #endif
 
 namespace H2Core
