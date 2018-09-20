@@ -34,6 +34,11 @@
 #define LOGGER_SLEEP do { usleep( 500000 ); usleep( 500000 ); } while (0)
 #endif
 
+#ifdef Q_CC_MSVC
+#  define strcasecmp stricmp
+#  define strncasecmp strnicmp
+#endif
+
 namespace H2Core {
 
 unsigned Logger::__bit_msk = 0;
