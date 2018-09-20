@@ -32,8 +32,14 @@
 #include <string>
 #include <cassert>
 
+#include <QtGlobal>
+
 #ifndef RIGHT_HERE
-#define RIGHT_HERE __FILE__, __LINE__, __PRETTY_FUNCTION__
+#i  fdef Q_CC_MSVC
+#   define RIGHT_HERE __FILE__, __LINE__, __FUNCTION__
+#  else
+#    define RIGHT_HERE __FILE__, __LINE__, __PRETTY_FUNCTION__
+#  endif
 #endif
 
 namespace H2Core
