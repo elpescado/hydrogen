@@ -20,6 +20,7 @@
  *
  */
 
+#include "hydrogen/compat.h"
 #include <hydrogen/basics/pattern.h>
 #include "hydrogen/config.h"
 

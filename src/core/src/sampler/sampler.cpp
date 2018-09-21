@@ -382,7 +382,8 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 						}
 					}
 					if( !pSample ) {
-						int __possibleIndex[ __maxLayers ];
+						//int __possibleIndex[ __maxLayers ];
+						std::vector<int> __possibleIndex( __maxLayers, 0 );
 						int __foundSamples = 0;
 						float __roundRobinID;
 						for ( unsigned nLayer = 0; nLayer < __maxLayers; ++nLayer ) {
