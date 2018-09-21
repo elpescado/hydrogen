@@ -227,6 +227,8 @@ FIND_HELPER(LRDF lrdf lrdf.h lrdf)
 FIND_HELPER(RUBBERBAND rubberband rubberband/RubberBandStretcher.h rubberband)
 FIND_HELPER(CPPUNIT cppunit cppunit/TestCase.h cppunit)
 
+find_package(pthreads)
+
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
