@@ -20,6 +20,7 @@
  *
  */
 
+#include <hydrogen/basics/pattern.h>
 #include "hydrogen/version.h"
 #include <hydrogen/basics/adsr.h>
 #include <hydrogen/hydrogen.h>
@@ -31,7 +32,6 @@
 #include <hydrogen/basics/instrument_layer.h>
 #include <hydrogen/LocalFileMng.h>
 #include <hydrogen/basics/note.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/basics/playlist.h>
 #include <hydrogen/Preferences.h>

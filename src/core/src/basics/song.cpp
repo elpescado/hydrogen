@@ -20,6 +20,7 @@
  *
  */
 
+#include <hydrogen/basics/pattern.h>
 #include "hydrogen/version.h"
 
 #include <cassert>
@@ -38,7 +39,6 @@
 #include <hydrogen/basics/instrument_component.h>
 #include <hydrogen/basics/instrument_list.h>
 #include <hydrogen/basics/instrument_layer.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/basics/note.h>
 #include <hydrogen/basics/automation_path.h>

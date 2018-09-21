@@ -1,8 +1,8 @@
 
+#include <hydrogen/basics/pattern.h>
 #include <hydrogen/config.h>
 #include <hydrogen/helpers/files.h>
 #include <hydrogen/helpers/filesystem.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/playlist.h>
 #include <hydrogen/basics/song.h>
 

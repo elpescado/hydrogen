@@ -20,6 +20,7 @@
  *
  */
 
+#include <hydrogen/basics/pattern.h>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -40,7 +41,6 @@
 #include <hydrogen/Preferences.h>
 #include <hydrogen/basics/sample.h>
 #include <hydrogen/basics/song.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/helpers/filesystem.h>
 #include <hydrogen/event_queue.h>

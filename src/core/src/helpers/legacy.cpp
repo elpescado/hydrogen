@@ -1,4 +1,5 @@
 
+#include <hydrogen/basics/pattern.h>
 #include <hydrogen/helpers/legacy.h>
 
 #include <hydrogen/version.h>
@@ -7,7 +8,6 @@
 #include <hydrogen/basics/drumkit.h>
 #include <hydrogen/basics/drumkit_component.h>
 #include <hydrogen/basics/playlist.h>
-#include <hydrogen/basics/pattern.h>
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/basics/instrument.h>
 #include <hydrogen/basics/instrument_list.h>
