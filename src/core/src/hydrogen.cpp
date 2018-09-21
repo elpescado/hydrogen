@@ -22,12 +22,6 @@
 
 #include "hydrogen/config.h"
 
-#ifdef WIN32
-#    include "hydrogen/timehelper.h"
-#else
-#    include <unistd.h>
-#    include <sys/time.h>
-#endif
 
 #include <pthread.h>
 #include <cassert>
@@ -91,6 +85,12 @@
 #include <hydrogen/IO/CoreAudioDriver.h>
 #include <hydrogen/IO/PulseAudioDriver.h>
 
+#ifdef WIN32
+#    include "hydrogen/timehelper.h"
+#else
+#    include <unistd.h>
+#    include <sys/time.h>
+#endif
 namespace H2Core
 {
 
