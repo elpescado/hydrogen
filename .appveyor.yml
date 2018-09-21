@@ -1,14 +1,16 @@
 environment:
   #VCPKG_DEFAULT_TRIPLET: "x64-windows"
   matrix:
-    # - ENV_NAME: MinGW 32
-    #   COMPILER: MinGW
-    #   QTDIR: "C:\\Qt\\5.11.1\\mingw53_32"
-    #   GENERATOR: "MinGW Makefiles"
-    #   SDK: "C:\\mingw-w64\\i686-5.3.0-posix-dwarf-rt_v4-rev0\\mingw32\\bin"
-    #
+    - ENV_NAME: MinGW 32
+      COMPILER: MinGW
+      VCPKG_DEFAULT_TRIPLET: "x86-windows"
+      QTDIR: "C:\\Qt\\5.11.1\\mingw53_32"
+      GENERATOR: "MinGW Makefiles"
+      SDK: "C:\\mingw-w64\\i686-5.3.0-posix-dwarf-rt_v4-rev0\\mingw32\\bin"
+
     - ENV_NAME: MSVC 32
       COMPILER: MSVC
+      VCPKG_DEFAULT_TRIPLET: "x86-windows"
       QTDIR: "C:\\Qt\\5.11.1\\msvc2015"
       GENERATOR: "Visual Studio 14 2015"
       SDK: ""
@@ -36,7 +38,7 @@ before_build:
       mkdir build
       cd build
       cmake --version
-      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
+      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET="%VCPKG_DEFAULT_TRIPLET%" -G "%GENERATOR%" ..
 
 build:
   verbosity: detailed
