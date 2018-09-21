@@ -38,7 +38,8 @@ before_build:
       mkdir build
       cd build
       cmake --version
-      cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET="%VCPKG_DEFAULT_TRIPLET%" -G "%GENERATOR%" ..
+      if [%COMPILER%]==[MSVC]  cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
+      if [%COMPILER%]==[MinGW] cmake -G "%GENERATOR%" ..
 
 build:
   verbosity: detailed
