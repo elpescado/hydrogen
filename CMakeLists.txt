@@ -320,6 +320,11 @@ COLOR_MESSAGE("${cyan}Usefull extensions${reset}
 * ${purple}LRDF${reset}                         : ${LRDF_STATUS}
 * ${purple}RUBBERBAND${reset}                   : ${RUBBERBAND_STATUS}
 *                                ${LIBRUBBERBAND_MSG}\n"
+
+sndfile    ${SNDFILE_STATUS} ${SNDFILE_FOUND} ${SNDFILE_LIBRARIES}
+libsndfile ${LIBSNDFILE_STATUS} ${LIBSNDFILE_FOUND} ${LIBSNDFILE_LIBRARIES}
+pthreads   ${PTHREADS_STATUS} ${PTHREADS_FOUND} ${PTHREADS_LIBRARIES}
+winpthreads   ${WINPTHREADS_STATUS} ${WINPTHREADS_FOUND} ${WINPTHREADS_LIBRARIES}
 )
 
 IF(WANT_DEBUG)
