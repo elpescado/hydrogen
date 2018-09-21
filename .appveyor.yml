@@ -52,3 +52,7 @@ build_script:
 
 cache:
   - C:\tools\vcpkg\installed -> .appveyor.yml
+
+ artifacts:
+   - path: build
+     name: CMakeCache.txt
