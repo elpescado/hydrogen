@@ -23,7 +23,7 @@
 #ifndef H2C_PATTERN_H
 #define H2C_PATTERN_H
 
-#include <set>
+//#include <set>
 
 #include <hydrogen/object.h>
 #include <hydrogen/basics/note.h>
