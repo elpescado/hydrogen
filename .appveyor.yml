@@ -36,7 +36,7 @@ before_build:
 
       vcpkg install libarchive libsndfile portaudio pthreads cppunit
       vcpkg integrate install
-      tree C:\Tools\vcpkg\installed\ /a /f
+      tree C:\tools\vcpkg /a /f
       mkdir build
       cd build
       cmake --version
