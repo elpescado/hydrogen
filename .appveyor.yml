@@ -29,13 +29,13 @@ image:
 
 before_build:
   cmd: |-
-      tree C:\Tools\vcpkg\installed\ /a /f
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=%SDK%;%PATH%
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
 
       vcpkg install libarchive libsndfile portaudio pthreads cppunit
       vcpkg integrate install
+      tree C:\Tools\vcpkg\installed\ /a /f
       mkdir build
       cd build
       cmake --version
