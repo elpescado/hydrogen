@@ -37,6 +37,8 @@
 #include <chrono>
 #include <memory>
 
+#include <unistd.h>
+
 using namespace H2Core;
 
 /**
