@@ -43,6 +43,8 @@
  * This way SleepEx always returns 0, after the specified time has passed.
  */
 #define sleep( SECONDS ) SleepEx( SECONDS * 1000, false )
+#else
+#  include <unistd.h>
 #endif
 
 namespace H2Core
