@@ -50,9 +50,13 @@ TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
 	${SNDFILE_LIBRARIES}
 	${PTHREADS_LIBRARIES}
 	${WINPTHREADS_LIBRARIES}
-	sndfile-shared
-	C:\\TOOLS\\VCPKG\\INSTALLED\\x86-windows\\lib\\pthreadsVC2.lib
 )
+IF( DEFINED ENV{APPVEYOR} )
+	TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
+		sndfile-shared
+		C:\\TOOLS\\VCPKG\\INSTALLED\\x86-windows\\lib\\pthreadsVC2.lib
+	)
+ENDIF()
 
 TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
 	Qt5::Core
