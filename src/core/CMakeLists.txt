@@ -51,6 +51,7 @@ TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
 	${PTHREADS_LIBRARIES}
 	${WINPTHREADS_LIBRARIES}
 	sndfile-shared
+	pthreads
 )
 
 TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
