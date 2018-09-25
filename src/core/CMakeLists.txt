@@ -51,7 +51,7 @@ TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
 	${PTHREADS_LIBRARIES}
 	${WINPTHREADS_LIBRARIES}
 	sndfile-shared
-	C:\TOOLS\VCPKG\INSTALLED\x86-windows\lib\pthreadsVC2.lib
+	C:\\TOOLS\\VCPKG\\INSTALLED\\x86-windows\\lib\\pthreadsVC2.lib
 )
 
 TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
