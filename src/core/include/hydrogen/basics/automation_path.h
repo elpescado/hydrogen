@@ -26,12 +26,26 @@
 
 #include <map>
 
+#if __cplusplus > 199711L || _MSC_VER >= 1900
+#  pragma message ("C++11 detected")
+#  define H2_CPP11
+#else
+#  pragma message ("C++11 NOT detected")
+#endif
+
+#ifndef H2_CPP11
+#  pragma message ("C++ pre-11, defining noexcept")
+#  define noexcept
+#endif
+
+/*
 #if __cplusplus <= 199711L
 #  pragma message ("C++ pre-11, defining noexcept")
 #  define noexcept
 #else
 #  pragma message ("C++11, noexcept likely available")
 #endif
+*/
 
 namespace H2Core
 {
