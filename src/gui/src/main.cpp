@@ -27,7 +27,6 @@
 #include <QLibraryInfo>
 #include <hydrogen/config.h>
 #include <hydrogen/version.h>
-#include <getopt.h>
 
 #include "SplashScreen.h"
 #include "HydrogenApp.h"
