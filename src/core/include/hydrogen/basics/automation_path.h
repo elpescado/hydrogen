@@ -27,7 +27,10 @@
 #include <map>
 
 #if __cplusplus <= 199711L
+#  pragma message ("C++ pre-11, defining noexcept")
 #  define noexcept
+#else
+#  pragma message ("C++11, noexcept likely available")
 #endif
 
 namespace H2Core
