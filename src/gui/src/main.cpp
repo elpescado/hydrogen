@@ -124,8 +124,8 @@ static int setup_unix_signal_handlers()
 	if (sigaction(SIGUSR1, &usr1, 0) > 0)
 		return 1;
 
-	return 0;
 #endif
+	return 0;
 }
 
 static void setApplicationIcon(QApplication *app)
