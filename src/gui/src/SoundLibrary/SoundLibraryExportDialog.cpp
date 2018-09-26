@@ -47,6 +47,12 @@
 #include <cstdio>
 #endif
 
+#ifdef Q_OS_WIN
+#  include <io.h>
+#else
+#  include <unistd.h>
+#endif
+
 using namespace H2Core;
 
 const char* SoundLibraryExportDialog::__class_name = "SoundLibraryExportDialog";
