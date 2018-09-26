@@ -73,6 +73,8 @@
 #ifndef WIN32
 #include <sys/time.h>
 #include <sys/socket.h>
+#else
+#include <io.h> // read(), write()
 #endif
 
 #ifdef H2CORE_HAVE_LASH
