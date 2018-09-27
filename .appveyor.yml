@@ -40,7 +40,7 @@ before_build:
       mkdir build
       cd build
       cmake --version
-      if [%COMPILER%]==[MSVC]  cmake -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
+      if [%COMPILER%]==[MSVC]  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
       if [%COMPILER%]==[MinGW] cmake -G "%GENERATOR%" ..
       dir
       appveyor PushArtifact CMakeCache.txt
