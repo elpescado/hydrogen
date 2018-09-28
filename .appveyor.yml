@@ -30,7 +30,8 @@ image:
 
 before_build:
   cmd: |-
-      tree c:\msys64\bin /a /f
+      echo %PATH%
+      tree c:\msys64 /a /f
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=%SDK%;%PATH%
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
