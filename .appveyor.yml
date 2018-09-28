@@ -31,7 +31,7 @@ image:
 before_build:
   cmd: |-
       echo %PATH%
-      set PATH=C:\msys64\MINGW64\bin;C:\msys64\usr\bin;%PATH%
+      rem set PATH=C:\msys64\MINGW64\bin;C:\msys64\usr\bin;%PATH%
       c:\msys64\usr\bin\pacman -Ss libarchive
       c:\msys64\usr\bin\pacman -Ss libsndfile
       c:\msys64\usr\bin\pacman -Ss cppunit
