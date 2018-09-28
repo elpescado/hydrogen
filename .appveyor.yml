@@ -30,7 +30,7 @@ image:
 
 before_build:
   cmd: |-
-      c:\msys64\bin\pacman --version
+      tree c:\msys64\bin /a /f
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=%SDK%;%PATH%
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
