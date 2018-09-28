@@ -31,6 +31,11 @@ image:
 before_build:
   cmd: |-
       echo %PATH%
+      c:\msys64\usr\bin\pacman -Ss libarchive
+      c:\msys64\usr\bin\pacman -Ss libsndfile
+      c:\msys64\usr\bin\pacman -Ss cppunit
+      c:\msys64\usr\bin\pacman -Ss portaudio
+      c:\msys64\usr\bin\pacman -Ss pthreads
       c:\msys64\usr\bin\pacman -S mingw64/mingw-w64-libarchive mingw64/mingw-w64-libsndfile mingw64/mingw-w64-cppunit mingw64/mingw-w64-portaudio mingw64/mingw-w64-winpthreads-git
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=%SDK%;%PATH%
