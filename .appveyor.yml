@@ -38,7 +38,7 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
       c:\msys64\usr\bin\pacman --noconfirm --needed  -S mingw32/mingw-w64-i686-libarchive mingw32/mingw-w64-i686-libsndfile mingw32/mingw-w64-i686-cppunit mingw32/mingw-w64-i686-portaudio mingw32/mingw-w64-i686-libwinpthread-git mingw32/mingw-w64-i686-pkg-config
-      bash -lc "find c:\\msys64 -name '*.cmake' -print"
+      bash -lc "find c:/msys64 -name '*.cmake' -print"
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=%SDK%;%PATH%
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
