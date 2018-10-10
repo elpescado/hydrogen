@@ -56,7 +56,7 @@ before_build:
       cmake --version
       if [%COMPILER%]==[MSVC]  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
       if [%COMPILER%]==[MinGW] cmake -G "%GENERATOR%" ..
-      src/tests/tests.exe
+      src\tests\tests.exe
       cpack -G NSIS
       dir
       appveyor PushArtifact CMakeCache.txt
