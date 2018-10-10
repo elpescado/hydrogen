@@ -43,8 +43,8 @@ before_build:
       bash -lc "find c:/msys64 -name '*.pc' -print"
       bash -lc "find c:/msys64 -name 'pkg-config.exe' -print"
       set CMAKE_PREFIX_PATH=%QTDIR%
-      set PATH=C:\mingw32\bin;%SDK%;%PATH%
-      set PKG_CONFIG_PATH="/mingw32/lib/pkgconfig/"
+      set PATH=c:\msys64\mingw32\bin;%SDK%;%PATH%
+      set PKG_CONFIG_PATH="c:\msys64\mingw32\lib\pkgconfig"
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
       echo %PATH%
 
