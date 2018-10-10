@@ -41,7 +41,8 @@ before_build:
       c:\msys64\usr\bin\pacman -Ql mingw-w64-i686-libarchive mingw-w64-i686-libsndfile mingw-w64-i686-cppunit mingw-w64-i686-portaudio mingw-w64-i686-libwinpthread-git mingw-w64-i686-pkg-config
       bash -lc "find c:/msys64 -name '*.cmake' -print"
       set CMAKE_PREFIX_PATH=%QTDIR%
-      set PATH=%SDK%;%PATH%
+      set PATH=C:\mingw32\bin;%SDK%;%PATH%
+      set PKG_CONFIG_PATH="/mingw32/lib/pkgconfig/"
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
 
       rem vcpkg install libarchive libsndfile portaudio pthreads cppunit
