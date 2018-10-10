@@ -53,8 +53,8 @@ TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
 )
 IF( DEFINED ENV{APPVEYOR} )
 	TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
-		sndfile-shared
-		C:\\TOOLS\\VCPKG\\INSTALLED\\x86-windows\\lib\\manual-link\\pthreads.lib
+#		sndfile-shared
+#		C:\\TOOLS\\VCPKG\\INSTALLED\\x86-windows\\lib\\manual-link\\pthreads.lib
 	)
 ENDIF()
 
