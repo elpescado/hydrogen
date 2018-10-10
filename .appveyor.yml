@@ -39,7 +39,7 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss pthreads
       c:\msys64\usr\bin\pacman --noconfirm --needed  -S mingw32/mingw-w64-i686-libarchive mingw32/mingw-w64-i686-libsndfile mingw32/mingw-w64-i686-cppunit mingw32/mingw-w64-i686-portaudio mingw32/mingw-w64-i686-libwinpthread-git mingw32/mingw-w64-i686-pkg-config
       rem c:\msys64\usr\bin\pacman -Ql mingw-w64-i686-libarchive mingw-w64-i686-libsndfile mingw-w64-i686-cppunit mingw-w64-i686-portaudio mingw-w64-i686-libwinpthread-git mingw-w64-i686-pkg-config
-      bash -lc "find c:/mingw32 -name '*.cmake' -print"
+      bash -lc "find c:/msys64 -name '*.cmake' -print"
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=C:\mingw32\bin;%SDK%;%PATH%
       set PKG_CONFIG_PATH="/mingw32/lib/pkgconfig/"
