@@ -68,8 +68,9 @@ build_script:
       if [%COMPILER%]==[MSVC]  cmake --build . --target ALL_BUILD -- /maxcpucount:4
       if [%COMPILER%]==[MinGW] cmake --build . 
       echo %PATH%
-      src\tests\tests.exe
+      rem src\tests\tests.exe
       cpack -G NSIS
+      appveyor PushArtifact Hydrogen-*.exe
 
 
 cache:
