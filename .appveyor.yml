@@ -56,7 +56,7 @@ before_build:
       cmake --version
       if [%COMPILER%]==[MSVC]  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
       if [%COMPILER%]==[MinGW] cmake -G "%GENERATOR%" ..
-      bash -lc "i586-mingw32msvc-objdump -p  src/tests/tests.exe | grep 'DLL Name:'"
+      rem bash -lc "i586-mingw32msvc-objdump -p  src/tests/tests.exe | grep 'DLL Name:'"
       dir
       appveyor PushArtifact CMakeCache.txt
 
