@@ -9,21 +9,41 @@ environment:
        GENERATOR: "MinGW Makefiles"
        SDK: "C:\\mingw-w64\\i686-5.3.0-posix-dwarf-rt_v4-rev0\\mingw32\\bin"
 
-#    - ENV_NAME: MSVC 32
-#      COMPILER: MSVC
-#      VCPKG_DEFAULT_TRIPLET: "x86-windows"
-#      QTDIR: "C:\\Qt\\5.11.1\\msvc2015"
-#      GENERATOR: "Visual Studio 14 2015"
-#      SDK: ""
+     - ENV_NAME: MSVC 32
+       BUILD_TYPE: "Debug"
+       COMPILER: MSVC
+       VCPKG_DEFAULT_TRIPLET: "x86-windows"
+       QTDIR: "C:\\Qt\\5.11.1\\msvc2015"
+       GENERATOR: "Visual Studio 14 2015"
+       SDK: ""
 
-#    - ENV_NAME: MSVC 64
-#      COMPILER: MSVC
-#      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#      PLATFORM: x64
-#      VCPKG_DEFAULT_TRIPLET: "x64-windows"
-#      QTDIR: "C:\\Qt\\5.11.1\\msvc2017_64"
-#      GENERATOR: "Visual Studio 15 2017 Win64"
-#      SDK: ""
+     - ENV_NAME: MSVC 64
+       BUILD_TYPE: "Debug"
+       COMPILER: MSVC
+       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+       PLATFORM: x64
+       VCPKG_DEFAULT_TRIPLET: "x64-windows"
+       QTDIR: "C:\\Qt\\5.11.1\\msvc2017_64"
+       GENERATOR: "Visual Studio 15 2017 Win64"
+       SDK: ""
+
+     - ENV_NAME: MSVC 32
+       BUILD_TYPE: "Release"
+       COMPILER: MSVC
+       VCPKG_DEFAULT_TRIPLET: "x86-windows"
+       QTDIR: "C:\\Qt\\5.11.1\\msvc2015"
+       GENERATOR: "Visual Studio 14 2015"
+       SDK: ""
+
+     - ENV_NAME: MSVC 64
+       BUILD_TYPE: "Release"
+       COMPILER: MSVC
+       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+       PLATFORM: x64
+       VCPKG_DEFAULT_TRIPLET: "x64-windows"
+       QTDIR: "C:\\Qt\\5.11.1\\msvc2017_64"
+       GENERATOR: "Visual Studio 15 2017 Win64"
+       SDK: ""
 
 image:
   - "Visual Studio 2015"
@@ -54,7 +74,11 @@ before_build:
       mkdir build
       cd build
       cmake --version
-      if [%COMPILER%]==[MSVC]  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
+      
+      if [%COMPILER%]==[MinGW] set LDFLAGS="-static-libgcc -static-libstdc++"
+      
+      rem if [%COMPILER%]==[MSVC]  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
+      if [%COMPILER%]==[MSVC]  cmake --config %BUILD_TYPE% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
       if [%COMPILER%]==[MinGW] cmake -G "%GENERATOR%" ..
       rem bash -lc "i586-mingw32msvc-objdump -p  src/tests/tests.exe | grep 'DLL Name:'"
       dir
@@ -65,10 +89,10 @@ build:
 
 build_script:
   - cmd: |-
-      if [%COMPILER%]==[MSVC]  cmake --build . --target ALL_BUILD -- /maxcpucount:4
-      if [%COMPILER%]==[MinGW] cmake --build . 
+      if [%COMPILER%]==[MSVC]  cmake --build . --config %BUILD_TYPE% --target ALL_BUILD -- /maxcpucount:4
+      if [%COMPILER%]==[MinGW] cmake --build . --config %BUILD_TYPE%
       echo %PATH%
-      rem src\tests\tests.exe
+      src\tests\tests.exe
       cpack -G NSIS
       appveyor PushArtifact Hydrogen-*.exe
 
