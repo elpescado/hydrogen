@@ -75,7 +75,7 @@ before_build:
       cd build
       cmake --version
       
-      if [%COMPILER%]==[MinGW] set LDFLAGS="-static-libgcc -static-libstdc++"
+      if [%COMPILER%]==[MinGW] set LDFLAGS=-static-libgcc -static-libstdc++
       
       rem if [%COMPILER%]==[MSVC]  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
       if [%COMPILER%]==[MSVC]  cmake --config %BUILD_TYPE% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -G "%GENERATOR%" ..
