@@ -47,6 +47,7 @@ class LCDCombo : public QWidget, public H2Core::Object
 		int selected();
 		bool select(int idx );
 		bool select(int idx, bool emitValueChanged );
+		void clear() { actions.clear(); pop->clear(); }
 
 
 	private slots:
