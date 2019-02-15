@@ -168,4 +168,16 @@ void AutomationPath::remove_point(float x)
 	}
 }
 
+
+/**
+ * \brief Clear path
+ *
+ * Removes all points from automation path
+ */
+void AutomationPath::clear()
+{
+	_points.clear();
+}
+
+
 } //namespace H2Core

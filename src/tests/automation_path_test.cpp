@@ -60,6 +60,7 @@ class AutomationPathTest : public CppUnit::TestCase {
 	CPPUNIT_TEST(testFindNotFound);
 	CPPUNIT_TEST(testMovePoint);
 	CPPUNIT_TEST(testRemovePoint);
+	CPPUNIT_TEST(testClear);
 	CPPUNIT_TEST_SUITE_END();
 
 	const double delta = 0.0001;
@@ -334,6 +335,21 @@ class AutomationPathTest : public CppUnit::TestCase {
 				static_cast<double>(p.get_value(0.0f)),
 				delta);
 
+	}
+
+
+	void testClear()
+	{
+		AutomationPath p(1.0f, 1.0f, 1.0f);
+		p.add_point(4.0f, 1.0f);
+
+		p.clear();
+
+		CPPUNIT_ASSERT( p.empty() );
+		CPPUNIT_ASSERT_DOUBLES_EQUAL(
+				1.0,
+				static_cast<double>(p.get_value(4.0f)),
+				delta);
 	}
 };
 

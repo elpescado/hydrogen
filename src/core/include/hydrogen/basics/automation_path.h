@@ -62,6 +62,7 @@ class AutomationPath : private Object
 
 	void add_point(float x, float y);
 	void remove_point(float x);
+	void clear();
 
 	friend bool operator==(const AutomationPath &lhs, const AutomationPath &rhs);
 	friend bool operator!=(const AutomationPath &lhs, const AutomationPath &rhs);
