@@ -58,6 +58,7 @@ class AutomationManager {
 	decltype(m_controllers.cbegin()) cbegin() const { return m_controllers.cbegin(); }
 	decltype(m_controllers.cend()) cend() const { return m_controllers.cend(); }
 
+	int size() const { return m_controllers.size(); }
 	AutomationController& get_controller(int idx) { return *m_controllers[idx]; }
 	
 	std::unique_ptr<AutomationController> remove( int idx ) {

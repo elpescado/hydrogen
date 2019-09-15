@@ -21,26 +21,10 @@
  */
 #include <cppunit/extensions/HelperMacros.h>
 #include <hydrogen/basics/automation_path.h>
+#include "test_helper.h"
 
 using namespace H2Core;
 
-namespace CppUnit {
-template<>
-struct assertion_traits<std::pair<const float,float> >
-{
-	static bool equal(const std::pair<const float,float> &lhs, const std::pair<const float,float> &rhs)
-	{
-		return lhs == rhs;
-	}
-
-	static std::string toString(const std::pair<const float,float> &p)
-	{
-		std::stringstream o;
-		o << "(" << p.first << "," << p.second << ")";
-		return o.str();
-	}
-};
-}
 
 class AutomationPathTest : public CppUnit::TestCase {
 	CPPUNIT_TEST_SUITE(AutomationPathTest);

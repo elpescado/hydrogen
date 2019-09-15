@@ -1,8 +1,11 @@
 #ifndef TEST_HELPER_H
 #define TEST_HELPER_H
 
+#include <cppunit/TestAssert.h>
 #include <QString>
 #include <cassert>
+#include <utility>
+#include <sstream>
 
 class TestHelper {
 	static TestHelper *	__instance;
@@ -19,5 +22,24 @@ class TestHelper {
 };
 
 #define H2TEST_FILE(name) TestHelper::get_instance()->test_file(name)
+
+
+namespace CppUnit {
+template<>
+struct assertion_traits<std::pair<const float,float> >
+{
+	static bool equal(const std::pair<const float,float> &lhs, const std::pair<const float,float> &rhs)
+	{
+		return lhs == rhs;
+	}
+
+	static std::string toString(const std::pair<const float,float> &p)
+	{
+		std::stringstream o;
+		o << "(" << p.first << "," << p.second << ")";
+		return o.str();
+	}
+};
+}
 
 #endif

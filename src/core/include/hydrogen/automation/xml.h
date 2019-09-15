@@ -29,6 +29,22 @@
 
 namespace H2Core {
 
+class AutomationReader {
+	public:
+	AutomationReader( QDomElement node );
+	virtual ~AutomationReader() {}
+	std::unique_ptr<AutomationManager> read();
+
+	protected:
+	virtual std::unique_ptr<AutomationController> create_controller( QDomElement node );
+
+	private:
+	QDomElement m_Node;
+
+	int read_attribute( QDomElement node, const QString &name );
+};
+
+
 class AutomationWriter {
 	public:
 	AutomationWriter( QDomNode &parent );

@@ -24,17 +24,75 @@
 #include <QDomDocument>
 #include <QDomElement>
 
+#include <stdexcept>
+
 #include <hydrogen/basics/automation_path.h>
 #include <hydrogen/automation_path_serializer.h>
 #include <hydrogen/automation/controller_library.h>
 
 namespace H2Core {
 
+AutomationReader::AutomationReader( QDomElement node )
+	: m_Node{ node }
+{
+	if( m_Node.tagName() != "automationPaths" ) {
+		throw std::runtime_error( "Provided node must be <automationPaths> element" );
+	}
+}
+
+
+std::unique_ptr<AutomationManager> AutomationReader::read()
+{
+	AutomationPathSerializer pathSerializer;
+	QDomElement pathNode = m_Node.firstChildElement( "path" );
+	std::unique_ptr<AutomationManager> manager { new AutomationManager() };
+
+	while( !pathNode.isNull() ) {
+		QString sAdjust = pathNode.attribute( "adjust" );
+
+		auto ctrl = create_controller( pathNode );
+		pathSerializer.read_automation_path( pathNode, ctrl->path() );
+		manager->add_controller( std::move( ctrl ) );
+
+		pathNode = pathNode.nextSiblingElement( "path" );
+	}
+	return manager;
+}
+
+
+int AutomationReader::read_attribute( QDomElement node, const QString &name )
+{
+	return node.attribute( name ).toInt();
+}
+
+
+std::unique_ptr<AutomationController> AutomationReader::create_controller( QDomElement node )
+{
+	QString name = node.attribute( "adjust" );
+	if ( name == "master_volume" ) {
+		return std::unique_ptr<AutomationController>( new MasterVolumeController() );
+	}
+	else if ( name == "instrument_volume" ) {
+		int instrument_id = read_attribute( node, "instr" );
+		return std::unique_ptr<AutomationController>( new InstrumentVolumeController( instrument_id ) );
+	}
+	else if ( name == "instrument_pan" ) {
+		int instrument_id = read_attribute( node, "instr" );
+		return std::unique_ptr<AutomationController>( new InstrumentPanController( instrument_id ) );
+	}
+	else {
+		___ERRORLOG( QString( "Unknown automation controller: `%1`").arg( name ));
+	}
+	return nullptr;
+}
+
+
 AutomationWriter::AutomationWriter( QDomNode &parent )
 	: m_parentNode{ parent }
 {
 	m_doc = m_parentNode.ownerDocument();
 }
+
 
 void AutomationWriter::save( const AutomationManager &mgr)
 {
@@ -47,6 +105,8 @@ void AutomationWriter::save( const AutomationManager &mgr)
 	}
 	m_parentNode.appendChild( automationPathsTag );
 }
+
+
 QDomElement AutomationWriter::create_path_node( const AutomationController &ctrl)
 {
 	QDomElement path = m_doc.createElement( "path" );
