@@ -41,6 +41,8 @@
 #include <hydrogen/basics/sample.h>
 #include <hydrogen/helpers/filesystem.h>
 #include <hydrogen/automation_path_serializer.h>
+#include <hydrogen/automation/manager.h>
+#include <hydrogen/automation/xml.h>
 #include <hydrogen/fx/Effects.h>
 
 #include <algorithm>
@@ -660,6 +662,9 @@ int SongWriter::writeSong( Song *song, const QString& filename )
 	songNode.appendChild( timeLineTag );
 
 	// Automation Paths
+	AutomationWriter writer( songNode );
+	writer.save( song->get_automation_manager() );
+	/*
 	QDomNode automationPathsTag = doc.createElement( "automationPaths" );
 	AutomationPath *pPath = song->get_velocity_automation_path();
 	if (pPath) {
@@ -672,6 +677,7 @@ int SongWriter::writeSong( Song *song, const QString& filename )
 		automationPathsTag.appendChild(pathNode);
 	}
 	songNode.appendChild( automationPathsTag );
+	*/
 
 	QFile file(filename);
 	if ( !file.open(QIODevice::WriteOnly) )
