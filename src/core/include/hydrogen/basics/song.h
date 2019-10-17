@@ -28,6 +28,7 @@
 #include <QDomNode>
 #include <vector>
 #include <map>
+#include <memory>
 
 #include <hydrogen/object.h>
 
@@ -46,6 +47,7 @@ class Song;
 class DrumkitComponent;
 class PatternList;
 class AutomationPath;
+class AutomationManager;
 
 /**
 \ingroup H2CORE
@@ -226,6 +228,11 @@ class Song : public H2Core::Object
 			return __velocity_automation_path;
 		}
 
+		AutomationManager &get_automation_manager() const
+		{
+			return *__automation_manager;
+		}
+
 		DrumkitComponent* get_component( int ID );
 
 		void readTempPatternList( const QString& filename );
@@ -298,6 +305,7 @@ class Song : public H2Core::Object
 		bool								__playback_track_enabled;
 		float								__playback_track_volume;
 		AutomationPath*						__velocity_automation_path;
+		std::unique_ptr<AutomationManager>  __automation_manager;
 };
 
 

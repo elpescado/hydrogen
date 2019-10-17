@@ -43,20 +43,25 @@ AutomationReader::AutomationReader( QDomElement node )
 
 std::unique_ptr<AutomationManager> AutomationReader::read()
 {
+	std::unique_ptr<AutomationManager> manager { new AutomationManager() };
+	read_into( *manager );
+	return manager;
+}
+
+void AutomationReader::read_into( AutomationManager &manager )
+{
 	AutomationPathSerializer pathSerializer;
 	QDomElement pathNode = m_Node.firstChildElement( "path" );
-	std::unique_ptr<AutomationManager> manager { new AutomationManager() };
 
 	while( !pathNode.isNull() ) {
 		QString sAdjust = pathNode.attribute( "adjust" );
 
 		auto ctrl = create_controller( pathNode );
 		pathSerializer.read_automation_path( pathNode, ctrl->path() );
-		manager->add_controller( std::move( ctrl ) );
+		manager.add_controller( std::move( ctrl ) );
 
 		pathNode = pathNode.nextSiblingElement( "path" );
 	}
-	return manager;
 }
 
 

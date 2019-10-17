@@ -34,6 +34,7 @@ class AutomationReader {
 	AutomationReader( QDomElement node );
 	virtual ~AutomationReader() {}
 	std::unique_ptr<AutomationManager> read();
+	void read_into( AutomationManager &manager );
 
 	protected:
 	virtual std::unique_ptr<AutomationController> create_controller( QDomElement node );

@@ -42,6 +42,9 @@
 #include <hydrogen/basics/pattern_list.h>
 #include <hydrogen/basics/note.h>
 #include <hydrogen/basics/automation_path.h>
+#include <hydrogen/automation/manager.h>
+#include <hydrogen/automation/controller_library.h>
+#include <hydrogen/automation/xml.h>
 #include <hydrogen/automation_path_serializer.h>
 #include <hydrogen/helpers/xml.h>
 #include <hydrogen/helpers/filesystem.h>
@@ -82,6 +85,7 @@ Song::Song( const QString& name, const QString& author, float bpm, float volume 
 	, __playback_track_enabled( false )
 	, __playback_track_volume( 0.0 )
 	, __velocity_automation_path( NULL )
+	, __automation_manager( new AutomationManager() )
 {
 	INFOLOG( QString( "INIT '%1'" ).arg( __name ) );
 
@@ -1213,6 +1217,7 @@ Song* SongReader::readSong( const QString& filename )
 	}
 
 	// Automation Paths
+	/*
 	QDomNode automationPathsNode = songNode.firstChildElement( "automationPaths" );
 	if ( !automationPathsNode.isNull() ) {
 		AutomationPathSerializer pathSerializer;
@@ -1233,6 +1238,12 @@ Song* SongReader::readSong( const QString& filename )
 
 			pathNode = pathNode.nextSiblingElement( "path" );
 		}
+	}
+	*/
+	QDomElement automationPathsNode = songNode.firstChildElement( "automationPaths" );
+	if ( !automationPathsNode.isNull() ) {
+		AutomationReader reader( automationPathsNode );
+		reader.read_into( song->get_automation_manager() );
 	}
 
 	song->set_is_modified( false );
