@@ -1,0 +1,39 @@
+environment:
+  matrix:
+    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
+      QTDIR: 'C:\Qt\5.13.2\mingw73_64'
+      GENERATOR: "MinGW Makefiles"
+      BUILD_TYPE: "Debug"
+    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
+      QTDIR: 'C:\Qt\5.13.2\mingw73_64'
+      GENERATOR: "MinGW Makefiles"
+      BUILD_TYPE: "Release"
+
+image:
+  - "Visual Studio 2019"
+
+before_build:
+  cmd: |-
+      c:\msys64\usr\bin\pacman -Ss libarchive
+      c:\msys64\usr\bin\pacman -Ss libsndfile
+      c:\msys64\usr\bin\pacman -Ss cppunit
+      c:\msys64\usr\bin\pacman -Ss portaudio
+      c:\msys64\usr\bin\pacman -Ss pthreads
+
+      set CMAKE_PREFIX_PATH=%QTDIR%
+      set PATH=c:\msys64\mingw32\bin;%MINGW%;%PATH%
+      set PKG_CONFIG_PATH="c:\msys64\mingw32\lib\pkgconfig"
+
+      rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
+      echo %PATH%
+      mkdir build
+      cd build
+      cmake --version
+      cmake -G "%GENERATOR%" ..
+
+build:
+  verbosity: detailed
+
+build_script:
+  - cmd: |-
+     cmake --build . --config %BUILD_TYPE%
