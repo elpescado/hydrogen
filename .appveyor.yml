@@ -4,12 +4,12 @@ environment:
       QTDIR: 'C:\Qt\5.13.2\mingw73_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
-      BITS: 'mingw32/mingw-w64'
-    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
-      QTDIR: 'C:\Qt\5.13.2\mingw73_64'
-      GENERATOR: "MinGW Makefiles"
-      BUILD_TYPE: "Release"
-      BITS: 'mingw32/mingw-w64'
+      BITS: 'mingw64/mingw-w64-x86_64'
+    # - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
+    #   QTDIR: 'C:\Qt\5.13.2\mingw73_64'
+    #   GENERATOR: "MinGW Makefiles"
+    #   BUILD_TYPE: "Release"
+    #   BITS: 'mingw64/mingw-w64-x86_64'
 
 image:
   - "Visual Studio 2019"
