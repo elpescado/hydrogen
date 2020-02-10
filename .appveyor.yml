@@ -4,10 +4,12 @@ environment:
       QTDIR: 'C:\Qt\5.13.2\mingw73_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
+      BITS: 'mingw32/mingw-w64'
     - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
       QTDIR: 'C:\Qt\5.13.2\mingw73_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Release"
+      BITS: 'mingw32/mingw-w64'
 
 image:
   - "Visual Studio 2019"
@@ -20,11 +22,11 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
 
-      c:\msys64\usr\bin\pacman --noconfirm -S libarchive
-      c:\msys64\usr\bin\pacman --noconfirm -S libsndfile
-      c:\msys64\usr\bin\pacman --noconfirm -S cppunit
-      c:\msys64\usr\bin\pacman --noconfirm -S portaudio
-      c:\msys64\usr\bin\pacman --noconfirm -S pthreads
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libarchive
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-portaudio
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-pthreads
 
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=c:\msys64\mingw32\bin;%MINGW%;%PATH%
