@@ -26,7 +26,7 @@ before_build:
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-portaudio
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-pthreads
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
 
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=c:\msys64\mingw32\bin;%MINGW%;%PATH%
