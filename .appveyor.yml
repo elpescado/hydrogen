@@ -20,6 +20,12 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
 
+      c:\msys64\usr\bin\pacman --noconfirm -S libarchive
+      c:\msys64\usr\bin\pacman --noconfirm -S libsndfile
+      c:\msys64\usr\bin\pacman --noconfirm -S cppunit
+      c:\msys64\usr\bin\pacman --noconfirm -S portaudio
+      c:\msys64\usr\bin\pacman --noconfirm -S pthreads
+
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=c:\msys64\mingw32\bin;%MINGW%;%PATH%
       set PKG_CONFIG_PATH="c:\msys64\mingw32\lib\pkgconfig"
