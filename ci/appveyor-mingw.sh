@@ -4,7 +4,7 @@ set -ex
 
 for pkg in libarchive libsndfile cppunit portaudio libwinpthread-git;
 do
-    C:/msys64/usr/bin/pacman --noconfirm -S ${BITS}-${pkg}
+    C:\\msys64\\usr\\bin\\pacman.exe --noconfirm -S ${BITS}-${pkg}
 done
 
 export CMAKE_PREFIX_PATH=${QTDIR}
