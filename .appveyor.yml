@@ -45,6 +45,7 @@ build:
 build_script:
   - cmd: |-
      cmake --build . --config %BUILD_TYPE%
+     cpack -G NSIS
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
