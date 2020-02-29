@@ -16,30 +16,28 @@ image:
 
 before_build:
   cmd: |-
-      bash ci/appveyor-mingw.sh
+      c:\msys64\usr\bin\pacman -Ss libarchive
+      c:\msys64\usr\bin\pacman -Ss libsndfile
+      c:\msys64\usr\bin\pacman -Ss cppunit
+      c:\msys64\usr\bin\pacman -Ss portaudio
+      c:\msys64\usr\bin\pacman -Ss pthreads
 
-      # c:\msys64\usr\bin\pacman -Ss libarchive
-      # c:\msys64\usr\bin\pacman -Ss libsndfile
-      # c:\msys64\usr\bin\pacman -Ss cppunit
-      # c:\msys64\usr\bin\pacman -Ss portaudio
-      # c:\msys64\usr\bin\pacman -Ss pthreads
-      #
-      # c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libarchive
-      # c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
-      # c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
-      # c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-portaudio
-      # c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
-      #
-      # set CMAKE_PREFIX_PATH=%QTDIR%
-      # set PATH=c:\msys64\mingw64\bin;%MINGW%\bin;%QTDIR%\bin;%PATH%
-      # set PKG_CONFIG_PATH="c:\msys64\mingw64\lib\pkgconfig"
-      #
-      # rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
-      # echo %PATH%
-      # mkdir build
-      # cd build
-      # cmake --version
-      # cmake -G "%GENERATOR%" ..
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libarchive
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-portaudio
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
+
+      set CMAKE_PREFIX_PATH=%QTDIR%
+      set PATH=c:\msys64\mingw64\bin;%MINGW%\bin;%QTDIR%\bin;%PATH%
+      set PKG_CONFIG_PATH="c:\msys64\mingw64\lib\pkgconfig"
+
+      rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
+      echo %PATH%
+      mkdir build
+      cd build
+      cmake --version
+      cmake -G "%GENERATOR%" ..
 
 build:
   verbosity: detailed
