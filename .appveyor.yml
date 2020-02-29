@@ -29,7 +29,7 @@ before_build:
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
 
       set CMAKE_PREFIX_PATH=%QTDIR%
-      set PATH=c:\msys64\mingw64\bin;%MINGW%;%PATH%
+      set PATH=c:\msys64\mingw64\bin;%MINGW%\bin;%QTDIR%\bin;%PATH%
       set PKG_CONFIG_PATH="c:\msys64\mingw64\lib\pkgconfig"
 
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
