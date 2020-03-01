@@ -1,10 +1,12 @@
 environment:
   matrix:
-    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
+    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v6-rev0'
+      MSYS: 'C:\msys64\mingw64'
       QTDIR: 'C:\Qt\5.13.2\mingw73_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
       BITS: 'mingw64/mingw-w64-x86_64'
+      
     # - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
     #   QTDIR: 'C:\Qt\5.13.2\mingw73_64'
     #   GENERATOR: "MinGW Makefiles"
@@ -44,8 +46,34 @@ build:
 
 build_script:
   - cmd: |-
-     cmake --build . --config %BUILD_TYPE%
-     cpack -G NSIS
+      cmake --build . --config %BUILD_TYPE%
+
+      mkdir windows
+      copy src\gui\hydrogen.exe windows
+      copy src\core\libhydrogen-core-1.0.0.dll windows
+      copy src\tests\tests.exe windows
+
+      copy %MSYS%\bin\libFLAC-8.dll windows
+      copy %MSYS%\bin\libarchive-13.dll windows
+      copy %MSYS%\bin\libbz2-1.dll windows
+      copy %MSYS%\bin\libexpat-1.dll windows
+      copy %MSYS%\bin\liblz4.dll windows
+      copy %MSYS%\bin\liblzma-5.dll windows
+      copy %MSYS%\bin\libnettle-7.dll windows
+      copy %MSYS%\bin\libogg-0.dll windows
+      copy %MSYS%\bin\libportaudio-2.dll windows
+      copy %MSYS%\bin\libsndfile-1.dll windows
+      copy %MSYS%\bin\libspeex-1.dll windows
+      copy %MSYS%\bin\libwinpthread-1.dll windows
+      copy %MSYS%\bin\libzstd.dll windows
+      copy %MINGW%\bin\libgcc_s_seh-1.dll windows
+      copy %MINGW%\bin\libstdc++-6.dll windows
+
+      set PATH=%MINGW%\bin;%PATH%
+      %QTDIR%\bin\windeployqt.exe -xmlpatterns windows\hydrogen.exe
+
+
+      cpack -G NSIS
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
