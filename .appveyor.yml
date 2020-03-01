@@ -1,6 +1,6 @@
 environment:
   matrix:
-    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
+    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64'
       MSYS: 'C:\msys64\mingw64'
       QTDIR: 'C:\Qt\5.13\mingw73_64'
       GENERATOR: "MinGW Makefiles"
