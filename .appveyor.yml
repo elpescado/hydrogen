@@ -2,7 +2,7 @@ environment:
   matrix:
     - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64'
       MSYS: 'C:\msys64\mingw64'
-      QTDIR: 'C:\Qt\5.13\mingw73_64'
+      #  QTDIR: 'C:\Qt\5.13\mingw73_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
       BITS: 'mingw64/mingw-w64-x86_64'
@@ -36,7 +36,9 @@ before_build:
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-portaudio
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-qt5
 
+      set QTDIR=%MSYS%
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=c:\msys64\mingw64\bin;%MINGW%\bin;%QTDIR%\bin;%PATH%
       set PKG_CONFIG_PATH="c:\msys64\mingw64\lib\pkgconfig"
