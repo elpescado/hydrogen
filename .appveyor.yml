@@ -40,7 +40,7 @@ before_build:
 
       set QTDIR=%MSYS%
       set CMAKE_PREFIX_PATH=%QTDIR%
-      set PATH=c:\msys64\mingw64\bin;%MINGW%\bin;%QTDIR%\bin;%PATH%
+      set PATH=%MSYS%\bin;%QTDIR%\bin;%PATH%
       set PKG_CONFIG_PATH="c:\msys64\mingw64\lib\pkgconfig"
 
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
