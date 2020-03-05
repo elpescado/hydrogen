@@ -81,6 +81,8 @@ build_script:
       copy "%MINGW%\bin\libgcc_s_seh-1.dll" windows
       copy "%MINGW%\bin\libstdc++-6.dll" windows
 
+      file windows/*
+
       set PATH=%MINGW%\bin;%PATH%
       %QTDIR%\bin\windeployqt.exe -xmlpatterns windows\hydrogen.exe
 
