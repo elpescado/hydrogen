@@ -57,10 +57,14 @@ build_script:
   - cmd: |-
       cmake --build . --config %BUILD_TYPE%
 
+      
+
       mkdir windows
       copy "src\gui\hydrogen.exe" windows
       copy "src\core\libhydrogen-core-1.0.0.dll" windows
       copy "src\tests\tests.exe" windows
+
+      windows\tests.exe
 
       copy "%MSYS%\bin\libFLAC-8.dll" windows
       copy "%MSYS%\bin\libarchive-13.dll" windows
@@ -78,8 +82,8 @@ build_script:
       copy "%MSYS%\bin\libvorbis-0.dll" windows
       copy "%MSYS%\bin\libvorbisenc-2.dll" windows
       copy "%MSYS%\bin\libcppunit-1-14-0.dll" windows
-      copy "%MINGW%\bin\libgcc_s_seh-1.dll" windows
-      copy "%MINGW%\bin\libstdc++-6.dll" windows
+      copy "%MSYS%\bin\libgcc_s_seh-1.dll" windows
+      copy "%MSYS%\bin\libstdc++-6.dll" windows
 
       file windows/*
 
