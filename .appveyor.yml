@@ -65,6 +65,7 @@ build_script:
       copy "src\tests\tests.exe" windows
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
+      echo %H2_HOME%
       windows\tests.exe
 
       copy "%MSYS%\bin\libFLAC-8.dll" windows
