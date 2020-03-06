@@ -25,6 +25,11 @@ image:
 
 before_build:
   cmd: |-
+      set PATH=%MINGW%\bin;%PATH%
+      echo %APPVEYOR_API_URL%
+      curl -X POST -d "{"^""testName"^"": "^""First test"^"", "^""testFramework"^"": "^""CppUnit"^"", "^""fileName"^"": "^""first.cpp"^"", "^""outcome"^"": "^""Passed"^""}" "%APPVEYOR_API_URL%"
+      curl -X POST -d "{"^""testName"^"": "^""Second test"^"", "^""testFramework"^"": "^""CppUnit"^"", "^""fileName"^"": "^""second.cpp"^"", "^""outcome"^"": "^""Passed"^""}" "%APPVEYOR_API_URL%"
+
       c:\msys64\usr\bin\pacman -Ss libarchive
       c:\msys64\usr\bin\pacman -Ss libsndfile
       c:\msys64\usr\bin\pacman -Ss cppunit
@@ -63,11 +68,6 @@ build_script:
       copy "src\gui\hydrogen.exe" windows
       copy "src\core\libhydrogen-core-1.0.0.dll" windows
       copy "src\tests\tests.exe" windows
-
-      set PATH=%MINGW%\bin;%PATH%
-      echo %APPVEYOR_API_URL%
-      curl -X POST -d "{"^""testName"^"": "^""First test"^"", "^""testFramework"^"": "^""CppUnit"^"", "^""fileName"^"": "^""first.cpp"^"", "^""outcome"^"": "^""Passed"^""}" "^""%APPVEYOR_API_URL%"^""
-      curl -X POST -d "{"^""testName"^"": "^""Second test"^"", "^""testFramework"^"": "^""CppUnit"^"", "^""fileName"^"": "^""second.cpp"^"", "^""outcome"^"": "^""Passed"^""}" "^""%APPVEYOR_API_URL%"^""
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
       echo %H2_HOME%
