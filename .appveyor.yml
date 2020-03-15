@@ -73,6 +73,12 @@ build_script:
       echo %H2_HOME%
       windows\tests.exe
 
+      mkdir ..\windows\extralibs
+      echo "Hello" > ..\windows\extralibs\hello.txt
+      mkdir windows\extralibs
+      echo "World" > windows\extralibs\world.txt
+      cpack -G NSIS
+
       copy "%MSYS%\bin\libFLAC-8.dll" windows
       copy "%MSYS%\bin\libarchive-13.dll" windows
       copy "%MSYS%\bin\libbz2-1.dll" windows
