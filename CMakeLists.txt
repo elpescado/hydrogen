@@ -390,7 +390,7 @@ IF(MINGW)
     SET(WIN64 "OFF" CACHE BOOL "Windows 64 Bit")
 	SET(CPACK_STRIP_FILES "${WINDOWS_DIR}/src/cli/h2cli.exe" "${WINDOWS_DIR}/src/gui/hydrogen.exe" "${WINDOWS_DIR}/src/player/h2player.exe")
     #Program Files for Hydrogen
-    SET(WINDOWS_DIR ".")
+    SET(WINDOWS_DIR "windows")
     INSTALL(FILES "${WINDOWS_DIR}/src/cli/h2cli.exe" "${WINDOWS_DIR}/src/core/libhydrogen-core-${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.dll" "${WINDOWS_DIR}/src/gui/hydrogen.exe" "${WINDOWS_DIR}/src/player/h2player.exe" DESTINATION ./)
     #Install files from the extralibs dir
     INSTALL(DIRECTORY ${WINDOWS_DIR}/extralibs/ DESTINATION ./)

@@ -50,8 +50,9 @@ before_build:
 
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
       echo %PATH%
-      mkdir build
-      cd build
+      rem mkdir build
+      rem cd build
+      cd windows
       cmake --version
       cmake -G "%GENERATOR%" ..
 
