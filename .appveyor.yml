@@ -36,7 +36,6 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
 
-      c:\msys64\usr\bin\pacman --noconfirm -S tree
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libarchive
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
@@ -81,7 +80,7 @@ build_script:
       echo "World" > windows\extralibs\world.txt
 
       cmake --build . --target install
-      tree "C:\Program Files (x86)\hydrogen"
+      tree "C:\Program Files (x86)\hydrogen" /A /F
 
       cpack -G NSIS
 
