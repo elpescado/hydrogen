@@ -25,10 +25,8 @@ image:
 
 before_build:
   cmd: |-
-      set PATH=%MINGW%\bin;%PATH%
+      rem set PATH=%MINGW%\bin;%PATH%
       echo %APPVEYOR_API_URL%
-      curl -v -X POST -d "{"^""testName"^"": "^""First test"^"", "^""testFramework"^"": "^""CppUnit"^"", "^""fileName"^"": "^""first.cpp"^"", "^""outcome"^"": "^""Passed"^""}" "%APPVEYOR_API_URL%"api/tests
-      curl -v -X POST -d "{"^""testName"^"": "^""Second test"^"", "^""testFramework"^"": "^""CppUnit"^"", "^""fileName"^"": "^""second.cpp"^"", "^""outcome"^"": "^""Passed"^""}" "%APPVEYOR_API_URL%"api/tests
 
       c:\msys64\usr\bin\pacman -Ss libarchive
       c:\msys64\usr\bin\pacman -Ss libsndfile
@@ -42,6 +40,9 @@ before_build:
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-portaudio
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-qt5
+
+      mkdir dll
+      bash -lc "for DLL in c:/msys64/mingw64/bin/*.dll; do objdump -p $DLL > `basename dll/$DLL`.txt; done; tar czf dll.tar.gz dll"
 
       set QTDIR=%MSYS%
       set CMAKE_PREFIX_PATH=%QTDIR%
@@ -109,6 +110,10 @@ build_script:
 
 
       cpack -G NSIS
+
+artifacts:
+  - path: windows/dll.tar.gz
+    name: objdump DLL
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
