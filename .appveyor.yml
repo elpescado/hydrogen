@@ -41,13 +41,13 @@ before_build:
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-qt5
 
-      mkdir dll
-      bash -lc "for DLL in c:/msys64/mingw64/bin/*.dll; do objdump -p $DLL > `basename dll/$DLL`.txt; done; tar czf dll.tar.gz dll"
-
       set QTDIR=%MSYS%
       set CMAKE_PREFIX_PATH=%QTDIR%
       set PATH=%MSYS%\bin;%QTDIR%\bin;%PATH%
       set PKG_CONFIG_PATH="c:\msys64\mingw64\lib\pkgconfig"
+
+      mkdir dll
+      bash -lc "for DLL in c:/msys64/mingw64/bin/*.dll; do objdump -p $DLL > `basename dll/$DLL`.txt; done; tar czf dll.tar.gz dll"
 
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
       echo %PATH%
