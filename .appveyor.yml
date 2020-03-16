@@ -36,7 +36,7 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
 
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-tree
+      c:\msys64\usr\bin\pacman --noconfirm -S tree
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libarchive
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
