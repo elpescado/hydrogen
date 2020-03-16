@@ -36,6 +36,7 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
 
+      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-tree
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libarchive
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
       c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
@@ -78,6 +79,10 @@ build_script:
       echo "Hello" > ..\windows\extralibs\hello.txt
       mkdir windows\extralibs
       echo "World" > windows\extralibs\world.txt
+
+      make install
+      tree "C:\Program Files\hydrogen"
+
       cpack -G NSIS
 
       copy "%MSYS%\bin\libFLAC-8.dll" windows
