@@ -112,7 +112,7 @@ build_script:
       cpack -G NSIS
 
 artifacts:
-  - path: windows/dll.tar.gz
+  - path: dll.tar.gz
     name: objdump DLL
 
 on_finish:
