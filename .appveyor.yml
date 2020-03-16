@@ -80,7 +80,7 @@ build_script:
       mkdir windows\extralibs
       echo "World" > windows\extralibs\world.txt
 
-      make install
+      cmake --build . --target install
       tree "C:\Program Files\hydrogen"
 
       cpack -G NSIS
