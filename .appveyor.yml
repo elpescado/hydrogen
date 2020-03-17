@@ -76,7 +76,7 @@ build_script:
       objdump -p "src\tests\tests.exe" > tests.exe.txt
       ls %SystemRoot%\system32 > system32.txt
       ls %SystemRoot% > systemroot.txt
-      tar czf exe.tar.gz hydrogen.exe.txt libhydrogen-core-1.0.0.dll.txt tests.exe.txt system32.txt systemroot.txt
+      bash -lc "tar czf exe.tar.gz hydrogen.exe.txt libhydrogen-core-1.0.0.dll.txt tests.exe.txt system32.txt systemroot.txt"
 
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
