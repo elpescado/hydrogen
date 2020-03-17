@@ -71,6 +71,14 @@ build_script:
       copy "src\core\libhydrogen-core-1.0.0.dll" windows
       copy "src\tests\tests.exe" windows
 
+      objdump -p "src\gui\hydrogen.exe" > hydrogen.exe.txt
+      objdump -p "src\core\libhydrogen-core-1.0.0.dll" > libhydrogen-core-1.0.0.dll.txt
+      objdump -p "src\tests\tests.exe" > tests.exe.txt
+      ls %SystemRoot%\system32 > system32.txt
+      ls %SystemRoot% > systemroot.txt
+      tar czf exe.tar.gz hydrogen.exe.txt libhydrogen-core-1.0.0.dll.txt tests.exe.txt system32.txt systemroot.txt
+
+
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
       echo %H2_HOME%
       windows\tests.exe
@@ -79,6 +87,8 @@ build_script:
       echo "Hello" > ..\windows\extralibs\hello.txt
       mkdir windows\extralibs
       echo "World" > windows\extralibs\world.txt
+
+      %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs src/gui/hydrogen.exe
 
       cmake --build . --target install
       tree "C:\Program Files (x86)\hydrogen" /A /F
@@ -106,7 +116,6 @@ build_script:
 
       file windows/*
 
-      %QTDIR%\bin\windeployqt.exe -xmlpatterns windows\hydrogen.exe
 
 
       cpack -G NSIS
@@ -114,6 +123,8 @@ build_script:
 artifacts:
   - path: dll.tar.gz
     name: objdump DLL
+  - path: windows/exe.tar.gz
+    name: objdump EXE
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
