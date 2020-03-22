@@ -64,20 +64,10 @@ build_script:
   - cmd: |-
       cmake --build . --config %BUILD_TYPE%
 
-      
-
       mkdir windows
       copy "src\gui\hydrogen.exe" windows
       copy "src\core\libhydrogen-core-1.0.0.dll" windows
       copy "src\tests\tests.exe" windows
-
-      objdump -p "src\gui\hydrogen.exe" > hydrogen.exe.txt
-      objdump -p "src\core\libhydrogen-core-1.0.0.dll" > libhydrogen-core-1.0.0.dll.txt
-      objdump -p "src\tests\tests.exe" > tests.exe.txt
-      ls %SystemRoot%\system32 > system32.txt
-      ls %SystemRoot% > systemroot.txt
-      bash -lc "tar czf exe.tar.gz hydrogen.exe.txt libhydrogen-core-1.0.0.dll.txt tests.exe.txt system32.txt systemroot.txt"
-
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
       echo %H2_HOME%
@@ -121,12 +111,8 @@ build_script:
       cpack -G NSIS
 
 artifacts:
-  - path: dll.tar.gz
-    name: objdump DLL
-  - path: windows/exe.tar.gz
-    name: objdump EXE
   - path: windows/files.tar.gz
     name: Built DLLs
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    #on_finish:
+    #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
