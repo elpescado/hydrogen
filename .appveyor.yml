@@ -116,7 +116,7 @@ build_script:
 
       file windows/*
 
-
+      bash -lc "tar czvf files.tar.gz c:/msys64/mingw64/bin src/core/libhydrogen-core-1.0.0.dll src/gui/hydrogen.exe"
 
       cpack -G NSIS
 
@@ -125,6 +125,8 @@ artifacts:
     name: objdump DLL
   - path: windows/exe.tar.gz
     name: objdump EXE
+  - path: windows/files.tar.gz
+    name: Built DLLs
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
