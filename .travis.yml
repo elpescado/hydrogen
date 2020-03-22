@@ -56,6 +56,11 @@ script:
   - mkdir build && cd build && cmake -DWANT_LASH=1 -DWANT_LRDF=1 -DWANT_RUBBERBAND=1 .. && make
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then PATH="$(brew --prefix qt5)/bin:$PATH" ../macos/build_dmg.sh -v src/gui/hydrogen.app Hydrogen.dmg; fi
   - TMPDIR=/tmp src/tests/tests
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      sudo make install;
+      test -f /usr/local/bin/hydrogen;
+      test -f /usr/local/lib/libhydrogencore-1.0.0.so;
+    fi
 
 deploy:
   provider: releases
