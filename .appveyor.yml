@@ -84,31 +84,8 @@ build_script:
       tree "C:\Program Files (x86)\hydrogen" /A /F
 
       cpack -G NSIS
+      bash -lc "tar czvf files.tar.gz c:/msys64/mingw64/bin/*.dll src/core/libhydrogen-core-1.0.0.dll src/gui/hydrogen.exe"
 
-      copy "%MSYS%\bin\libFLAC-8.dll" windows
-      copy "%MSYS%\bin\libarchive-13.dll" windows
-      copy "%MSYS%\bin\libbz2-1.dll" windows
-      copy "%MSYS%\bin\libexpat-1.dll" windows
-      copy "%MSYS%\bin\liblz4.dll" windows
-      copy "%MSYS%\bin\liblzma-5.dll" windows
-      copy "%MSYS%\bin\libnettle-7.dll" windows
-      copy "%MSYS%\bin\libogg-0.dll" windows
-      copy "%MSYS%\bin\libportaudio-2.dll" windows
-      copy "%MSYS%\bin\libsndfile-1.dll" windows
-      copy "%MSYS%\bin\libspeex-1.dll" windows
-      copy "%MSYS%\bin\libwinpthread-1.dll" windows
-      copy "%MSYS%\bin\libzstd.dll" windows
-      copy "%MSYS%\bin\libvorbis-0.dll" windows
-      copy "%MSYS%\bin\libvorbisenc-2.dll" windows
-      copy "%MSYS%\bin\libcppunit-1-14-0.dll" windows
-      copy "%MSYS%\bin\libgcc_s_seh-1.dll" windows
-      copy "%MSYS%\bin\libstdc++-6.dll" windows
-
-      file windows/*
-
-      bash -lc "tar czvf files.tar.gz c:/msys64/mingw64/bin src/core/libhydrogen-core-1.0.0.dll src/gui/hydrogen.exe"
-
-      cpack -G NSIS
 
 artifacts:
   - path: windows/files.tar.gz
