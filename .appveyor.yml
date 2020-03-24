@@ -64,11 +64,6 @@ build_script:
   - cmd: |-
       cmake --build . --config %BUILD_TYPE%
 
-      mkdir windows
-      copy "src\gui\hydrogen.exe" windows
-      copy "src\core\libhydrogen-core-1.0.0.dll" windows
-      copy "src\tests\tests.exe" windows
-
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
       echo %H2_HOME%
       windows\tests.exe
@@ -82,28 +77,6 @@ build_script:
 
       cmake --build . --target install
       tree "C:\Program Files (x86)\hydrogen" /A /F
-
-      cpack -G NSIS
-
-      copy "%MSYS%\bin\libFLAC-8.dll" windows
-      copy "%MSYS%\bin\libarchive-13.dll" windows
-      copy "%MSYS%\bin\libbz2-1.dll" windows
-      copy "%MSYS%\bin\libexpat-1.dll" windows
-      copy "%MSYS%\bin\liblz4.dll" windows
-      copy "%MSYS%\bin\liblzma-5.dll" windows
-      copy "%MSYS%\bin\libnettle-7.dll" windows
-      copy "%MSYS%\bin\libogg-0.dll" windows
-      copy "%MSYS%\bin\libportaudio-2.dll" windows
-      copy "%MSYS%\bin\libsndfile-1.dll" windows
-      copy "%MSYS%\bin\libspeex-1.dll" windows
-      copy "%MSYS%\bin\libwinpthread-1.dll" windows
-      copy "%MSYS%\bin\libzstd.dll" windows
-      copy "%MSYS%\bin\libvorbis-0.dll" windows
-      copy "%MSYS%\bin\libvorbisenc-2.dll" windows
-      copy "%MSYS%\bin\libcppunit-1-14-0.dll" windows
-      copy "%MSYS%\bin\libgcc_s_seh-1.dll" windows
-      copy "%MSYS%\bin\libstdc++-6.dll" windows
-      7z a files.zip %APPVEYOR_BUILD_FOLDER%\windows\windows\*.dll %APPVEYOR_BUILD_FOLDER%\windows\windows\*.exe
 
       cpack -G NSIS
 
