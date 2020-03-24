@@ -66,6 +66,7 @@ build_script:
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
       echo %H2_HOME%
+      set PATH="%cd%\src\core;%PATH%"
       src\tests\tests.exe
 
       mkdir ..\windows\extralibs
