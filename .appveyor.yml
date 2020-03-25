@@ -25,6 +25,9 @@ image:
 
 before_build:
   cmd: |-
+      set PATH=C:\Python38;%PATH%
+      pip3 install pefile
+      python3 -c "import pefile"
       rem set PATH=%MINGW%\bin;%PATH%
       echo %APPVEYOR_API_URL%
 
