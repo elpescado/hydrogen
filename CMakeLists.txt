@@ -149,13 +149,13 @@ ENDIF(APPLE)
 
 
 #Installation paths
+INSTALL(GNUInstallDirs)
 IF(WIN32)
     SET(H2_BIN_PATH "")
     SET(H2_LIB_PATH "")
     SET(H2_DATA_PATH "")
     SET(H2_SYS_PATH "")
 ELSE()
-    include(GNUInstallDirs)
     SET(H2_BIN_PATH ${CMAKE_INSTALL_BINDIR})
     SET(H2_LIB_PATH ${CMAKE_INSTALL_LIBDIR})
     SET(H2_DATA_PATH "${CMAKE_INSTALL_DATADIR}/hydrogen")
@@ -287,6 +287,9 @@ COLOR_MESSAGE("${cyan}Installation Summary${reset}
 * Install Directory            : ${CMAKE_INSTALL_PREFIX}
 * User path                    : ${H2_USR_PATH}
 * System path                  : ${H2_SYS_PATH}
+* Bin path                     : ${H2_BIN_PATH}
+* Lib path                     : ${H2_LIB_PATH}
+* Data path                    : ${H2_DATA_PATH}
 * core library build as        : ${H2CORE_LIBRARY_TYPE}
 * debug capabilities           : ${H2CORE_HAVE_DEBUG}
 * macosx bundle                : ${H2CORE_HAVE_BUNDLE}
