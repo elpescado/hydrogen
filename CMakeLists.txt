@@ -149,7 +149,7 @@ ENDIF(APPLE)
 
 
 #Installation paths
-INSTALL(GNUInstallDirs)
+INCLUDE(GNUInstallDirs)
 IF(WIN32)
     SET(H2_BIN_PATH ".")
     SET(H2_LIB_PATH ".")

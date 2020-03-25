@@ -57,15 +57,17 @@ TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
 #SET_TARGET_PROPERTIES(hydrogen-core-${VERSION} PROPERTIES PUBLIC_HEADER   "${hydrogen_INCLUDES}" )
 SET_PROPERTY(TARGET hydrogen-core-${VERSION} PROPERTY CXX_STANDARD 14)
 
-INSTALL(TARGETS hydrogen-core-${VERSION}
-    LIBRARY DESTINATION "${H2_LIB_PATH}"
-    RUNTIME DESTINATION "${H2_LIB_PATH}"
-    # do not copy directory hierarchy
-    #PUBLIC_HEADER DESTINATION include/hydrogen
-)
-IF(NOT WIN32)
+
+IF(WIN32)
     # On Windows we do not want to install import library (.dll.a)
     INSTALL(TARGETS hydrogen-core-${VERSION}
+        LIBRARY DESTINATION "${H2_LIB_PATH}"
+        RUNTIME DESTINATION "${H2_LIB_PATH}"
+    )
+ELSE()
+    INSTALL(TARGETS hydrogen-core-${VERSION}
+        LIBRARY DESTINATION "${H2_LIB_PATH}"
+        RUNTIME DESTINATION "${H2_LIB_PATH}"
         ARCHIVE DESTINATION "${H2_LIB_PATH}"
     )
 ENDIF()
