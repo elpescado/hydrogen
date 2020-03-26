@@ -80,6 +80,7 @@ build_script:
       mkdir windows\extralibs
       echo "World" > windows\extralibs\world.txt
 
+      python %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
       %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs src/gui/hydrogen.exe
 
       cmake --build . --target install
