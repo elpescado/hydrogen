@@ -25,9 +25,6 @@ image:
 
 before_build:
   cmd: |-
-      set PATH=C:\Python38;%PATH%
-      python -m pip install pefile
-      python -c "import pefile"
       rem set PATH=%MINGW%\bin;%PATH%
       echo %APPVEYOR_API_URL%
 
@@ -77,7 +74,10 @@ build_script:
       mkdir windows\extralibs
       echo "World" > windows\extralibs\world.txt
 
-      python %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
+
+      set PYTHON=C:\Python38\python
+      %PYTHON% -m pip install pefile
+      %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
       %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs src/gui/hydrogen.exe
 
       cmake --build . --target install
