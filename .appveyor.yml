@@ -51,12 +51,14 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
 
+      echo %time%
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libarchive
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libsndfile
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-cppunit
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-portaudio
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libwinpthread-git
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-qt5
+      echo %time%
 
       set QTDIR=%MSYS%
       set CMAKE_PREFIX_PATH=%QTDIR%
@@ -70,7 +72,9 @@ before_build:
       cd windows
       cmake --version
       echo %BUILD_TYPE%
+      echo %time%
       cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% %CMAKE_FLAGS% ..
+      echo %time%
 
 build:
   verbosity: detailed
@@ -78,31 +82,33 @@ build:
 build_script:
   - cmd: |-
       echo %NUMBER_OF_PROCESSORS%
+
+      echo %time%
       cmake --build . --config %BUILD_TYPE%
+      echo %time%
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
       echo %H2_HOME%
-      cd
       SET CORE_PATH=%cd%\src\core
       echo %CORE_PATH%
       set PATH=%CORE_PATH%;%PATH%
+      file src\tests\tests.exe
       src\tests\tests.exe
-
-      mkdir ..\windows\extralibs
-      echo "Hello" > ..\windows\extralibs\hello.txt
-      mkdir windows\extralibs
-      echo "World" > windows\extralibs\world.txt
-
 
       set PYTHON=C:\Python38\python
       %PYTHON% -m pip install pefile
+      echo %time%
       %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
+      echo %time%
       %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs src/gui/hydrogen.exe
+      echo %time%
 
       cmake --build . --target install
       tree "C:\Program Files (x86)\hydrogen" /A /F
 
+      echo %time%
       cpack -G NSIS
+      echo %time%
 
       ls -l
 
