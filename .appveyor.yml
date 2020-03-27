@@ -93,6 +93,8 @@ build_script:
       ls -l
 
 artifacts:
+  - path: windows\Hydrogen-*.exe
+    name: Installer
 
 cache:
   - C:\msys64\mingw32
