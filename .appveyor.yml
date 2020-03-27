@@ -5,24 +5,28 @@ environment:
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON"
+      WDQ_MODE: "--debug"
 
     - MSYS: 'C:\msys64\mingw64'
       MSYS_REPO: 'mingw64/mingw-w64-x86_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Release"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF"
+      WDQ_MODE: "--release"
       
     - MSYS: 'C:\msys64\mingw32'
       MSYS_REPO: 'mingw32/mingw-w64-i686'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON"
+      WDQ_MODE: "--debug"
 
     - MSYS: 'C:\msys64\mingw32'
       MSYS_REPO: 'mingw32/mingw-w64-i686'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Release"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF"
+      WDQ_MODE: "--release"
 
     # - MINGW: 'C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64'
     #   MSYS: 'C:\msys64\mingw64'
@@ -95,12 +99,14 @@ build_script:
       file src\tests\tests.exe
       src\tests\tests.exe
 
+      objdump -p "src\gui\hydrogen.exe" | grep "DLL Name"
+
       set PYTHON=C:\Python38\python
       %PYTHON% -m pip install pefile
       echo %time%
       %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
       echo %time%
-      %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs src/gui/hydrogen.exe
+      %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs %WDQ_MODE% src/gui/hydrogen.exe
       echo %time%
 
       cmake --build . --target install
