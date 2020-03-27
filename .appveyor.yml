@@ -1,24 +1,27 @@
 environment:
   matrix:
-    - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64'
-      MSYS: 'C:\msys64\mingw64'
-      #  QTDIR: 'C:\Qt\5.13\mingw73_64'
+    - MSYS: 'C:\msys64\mingw64'
+      MSYS_REPO: 'mingw64/mingw-w64-x86_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
-      BITS: 'mingw64/mingw-w64-x86_64'
+
+    - MSYS: 'C:\msys64\mingw64'
+      MSYS_REPO: 'mingw64/mingw-w64-x86_64'
+      GENERATOR: "MinGW Makefiles"
+      BUILD_TYPE: "Release"
       
     # - MINGW: 'C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64'
     #   MSYS: 'C:\msys64\mingw64'
     #   QTDIR: 'C:\Qt\5.13.2\mingw73_64'
     #   GENERATOR: "MinGW Makefiles"
     #   BUILD_TYPE: "Debug"
-    #   BITS: 'mingw64/mingw-w64-x86_64'
+    #   MSYS_REPO: 'mingw64/mingw-w64-x86_64'
       
     # - MINGW: 'C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0'
     #   QTDIR: 'C:\Qt\5.13.2\mingw73_64'
     #   GENERATOR: "MinGW Makefiles"
     #   BUILD_TYPE: "Release"
-    #   BITS: 'mingw64/mingw-w64-x86_64'
+    #   MSYS_REPO: 'mingw64/mingw-w64-x86_64'
 
 image:
   - "Visual Studio 2015"
@@ -34,12 +37,12 @@ before_build:
       c:\msys64\usr\bin\pacman -Ss portaudio
       c:\msys64\usr\bin\pacman -Ss pthreads
 
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libarchive
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libsndfile
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-cppunit
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-portaudio
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-libwinpthread-git
-      c:\msys64\usr\bin\pacman --noconfirm -S %BITS%-qt5
+      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libarchive
+      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libsndfile
+      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-cppunit
+      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-portaudio
+      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libwinpthread-git
+      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-qt5
 
       set QTDIR=%MSYS%
       set CMAKE_PREFIX_PATH=%QTDIR%
@@ -52,7 +55,9 @@ before_build:
       rem cd build
       cd windows
       cmake --version
-      cmake -G "%GENERATOR%" ..
+      if %BUILD_TYPE% == "Debug" ( set WANT_DEBUG=ON ) ELSE ( set WANT_DEBUG=OFF )
+      echo %WANT_DEBUG%
+      cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DWANT_DEBUG=%WANT_DEBUG% ..
 
 build:
   verbosity: detailed
