@@ -55,15 +55,17 @@ before_build:
       rem cd build
       cd windows
       cmake --version
-      if %BUILD_TYPE% == "Debug" ( set WANT_DEBUG=ON ) ELSE ( set WANT_DEBUG=OFF )
+      echo %BUILD_TYPE%
+      if %BUILD_TYPE% == Debug ( set WANT_DEBUG=ON ) ELSE ( set WANT_DEBUG=OFF )
       echo %WANT_DEBUG%
-      cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DWANT_DEBUG=%WANT_DEBUG% ..
+      cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DWANT_DEBUG:BOOL=%WANT_DEBUG% ..
 
 build:
   verbosity: detailed
 
 build_script:
   - cmd: |-
+      echo %NUMBER_OF_PROCESSORS%
       cmake --build . --config %BUILD_TYPE%
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
