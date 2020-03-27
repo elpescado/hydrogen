@@ -88,7 +88,7 @@ build_script:
       echo %NUMBER_OF_PROCESSORS%
 
       echo %time%
-      cmake --build . --config %BUILD_TYPE%
+      cmake --build . -j %NUMBER_OF_PROCESSORS%
       echo %time%
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
@@ -101,6 +101,7 @@ build_script:
 
       objdump -p "src\gui\hydrogen.exe" | grep "DLL Name"
 
+      mkdir extralibs
       set PYTHON=C:\Python38\python
       %PYTHON% -m pip install pefile
       echo %time%
