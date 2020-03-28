@@ -1,5 +1,4 @@
 environment:
-  FOO: foobar
   matrix:
     # - MSYS: 'C:\msys64\mingw64'
     #   MSYS_REPO: 'mingw64/mingw-w64-x86_64'
@@ -47,17 +46,6 @@ image:
 
 before_build:
   cmd: |-
-      echo %FOO%
-      set
-      rem set PATH=%MINGW%\bin;%PATH%
-      echo %APPVEYOR_API_URL%
-
-      c:\msys64\usr\bin\pacman -Ss libarchive
-      c:\msys64\usr\bin\pacman -Ss libsndfile
-      c:\msys64\usr\bin\pacman -Ss cppunit
-      c:\msys64\usr\bin\pacman -Ss portaudio
-      c:\msys64\usr\bin\pacman -Ss pthreads
-
       echo %time%
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libarchive
       c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libsndfile
@@ -78,7 +66,6 @@ before_build:
       rem cd build
       cd windows
       cmake --version
-      echo %BUILD_TYPE%
       echo %time%
       cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% %CMAKE_FLAGS% ..
       echo %time%
