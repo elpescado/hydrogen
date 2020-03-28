@@ -97,10 +97,10 @@ build_script:
       echo %CORE_PATH%
       set PATH=%CORE_PATH%;%PATH%
       file src\tests\tests.exe
-      set TEMP=%APPVEYOR_BUILD_FOLDER%\testresults
-      mkdir %TEMP%
+      set TMP=%APPVEYOR_BUILD_FOLDER%\testresults
+      mkdir %TMP%
       src\tests\tests.exe || cmd /c "exit /b 0"
-      7z a %APPVEYOR_BUILD_FOLDER%\testresults.zip %TEMP%
+      7z a %APPVEYOR_BUILD_FOLDER%\testresults.zip %TMP%
       appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\testresults.zip
 
       objdump -p "src\gui\hydrogen.exe" | grep "DLL Name"
