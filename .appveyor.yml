@@ -4,14 +4,14 @@ environment:
       MSYS_REPO: 'mingw64/mingw-w64-x86_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Debug"
-      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON"
+      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON -DWIN64:BOOL=ON"
       WDQ_MODE: "--debug"
 
     - MSYS: 'C:\msys64\mingw64'
       MSYS_REPO: 'mingw64/mingw-w64-x86_64'
       GENERATOR: "MinGW Makefiles"
       BUILD_TYPE: "Release"
-      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF"
+      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF -DWIN64:BOOL=ON"
       WDQ_MODE: "--release"
       
     - MSYS: 'C:\msys64\mingw32'
