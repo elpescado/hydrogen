@@ -47,12 +47,12 @@ image:
 before_build:
   cmd: |-
       echo %time%
-      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libarchive
-      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libsndfile
-      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-cppunit
-      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-portaudio
-      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-libwinpthread-git
-      c:\msys64\usr\bin\pacman --noconfirm -S %MSYS_REPO%-qt5
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libarchive
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libsndfile
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-cppunit
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-portaudio
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libwinpthread-git
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-qt5
       echo %time%
 
       set QTDIR=%MSYS%
