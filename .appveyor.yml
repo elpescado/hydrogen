@@ -114,9 +114,6 @@ build_script:
       %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs %WDQ_MODE% src/gui/hydrogen.exe
       echo %time%
 
-      cmake --build . --target install
-      tree "C:\Program Files (x86)\hydrogen" /A /F
-
       echo %time%
       cpack -G NSIS
       echo %time%
