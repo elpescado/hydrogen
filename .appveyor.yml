@@ -1,4 +1,5 @@
 environment:
+  FOO: foobar
   matrix:
     # - MSYS: 'C:\msys64\mingw64'
     #   MSYS_REPO: 'mingw64/mingw-w64-x86_64'
@@ -46,6 +47,8 @@ image:
 
 before_build:
   cmd: |-
+      echo %FOO%
+      set
       rem set PATH=%MINGW%\bin;%PATH%
       echo %APPVEYOR_API_URL%
 
