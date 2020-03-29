@@ -103,7 +103,7 @@ build_script:
       echo %time%
 
       echo %time%
-      cpack -v -G NSIS
+      cpack -G NSIS -v
       echo %time%
 
       ls -l
