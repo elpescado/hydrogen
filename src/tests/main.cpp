@@ -62,11 +62,12 @@ int main( int argc, char **argv)
 	CppUnit::TestFactoryRegistry &registry = CppUnit::TestFactoryRegistry::getRegistry();
 	runner.addTest( registry.makeTest() );
 
-    if( parser.isSet( appveyorOption )) {
+    //if( parser.isSet( appveyorOption )) {
+        qDebug() << "Enabled AppVeyor reporting";
         AppVeyor::BuildWorkerApiClient appveyorApiClient;
         AppVeyorTestListener avtl( appveyorApiClient );
         runner.eventManager().addListener(&avtl);
-    }
+    //}
 	bool wasSuccessful = runner.run( "", false );
 
 	return wasSuccessful ? 0 : 1;

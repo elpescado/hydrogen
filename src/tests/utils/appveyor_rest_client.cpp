@@ -80,6 +80,8 @@ BuildWorkerApiClient::BuildWorkerApiClient()
         m_ApiRoot = QUrl(apiRoot);
         m_bEnabled = m_ApiRoot.isValid();
     }
+    qDebug() << "Initialized AppVeyor API client, enabled = " << m_bEnabled;
+    qDebug() << " -> API root: " << m_ApiRoot;
 }
 
 
