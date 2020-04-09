@@ -116,7 +116,12 @@ void BuildWorkerApiClient::doSyncRequest(QByteArray method, QString endpoint, co
     QNetworkAccessManager qnam;
     QNetworkRequest request{m_ApiRoot.resolved(endpointUrl)};
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
     auto reply = qnam.sendCustomRequest(request, method, jsonPayload);
+    #else
+    QBuffer buffer(&jsonPayload);
+    auto reply = qnam.sendCustomRequest(request, method, &buffer);
+    #endif
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
