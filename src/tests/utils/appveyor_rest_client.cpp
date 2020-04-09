@@ -23,6 +23,7 @@
 #include "appveyor_rest_client.h"
 
 #include <QDebug>
+#include <QBuffer>
 #include <QEventLoop>
 #include <QJsonDocument>
 #include <QNetworkAccessManager>
