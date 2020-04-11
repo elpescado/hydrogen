@@ -111,6 +111,10 @@ build_script:
       FOR %%F IN (Hydrogen-*.exe) DO %%F /S /D=%INSTDIR%
       tree %INSTDIR%
 
+      ls -l %INSTDIR%\hydrogen.exe
+      strip %INSTDIR%\hydrogen.exe
+      ls -l %INSTDIR%\hydrogen.exe
+
       ls -l
 
 artifacts:
