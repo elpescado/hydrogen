@@ -95,7 +95,7 @@ build_script:
 
       mkdir extralibs
       set PYTHON=C:\Python38\python
-      %PYTHON% -m pip install pefile
+      %PYTHON% -m pip install -r %APPVEYOR_BUILD_FOLDER%\windows\requirements.txt
       echo %time%
       %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
       echo %time%
@@ -115,7 +115,13 @@ build_script:
       strip %INSTDIR%\hydrogen.exe
       ls -l %INSTDIR%\hydrogen.exe
 
+      %PYTHON% -m pytest %APPVEYOR_BUILD_FOLDER%\windows\test_installation.py --junitxml=test_installation.xml
+
       ls -l
+
+on_finish:
+  - sh: |
+      find "$APPVEYOR_BUILD_FOLDER" -type f -name 'test_*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.appveyor.com/api/testresults/junit/$APPVEYOR_JOB_ID"
 
 artifacts:
   - path: windows\Hydrogen-*.exe
