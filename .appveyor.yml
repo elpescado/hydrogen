@@ -120,8 +120,8 @@ build_script:
       ls -l
 
 on_finish:
-  - sh: |
-      find "$APPVEYOR_BUILD_FOLDER" -type f -name 'test_*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.appveyor.com/api/testresults/junit/$APPVEYOR_JOB_ID"
+  - cmd: |
+      bash -c "find $APPVEYOR_BUILD_FOLDER -type f -name 'test_*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' 'https://ci.appveyor.com/api/testresults/junit/'$APPVEYOR_JOB_ID"
 
 artifacts:
   - path: windows\Hydrogen-*.exe
