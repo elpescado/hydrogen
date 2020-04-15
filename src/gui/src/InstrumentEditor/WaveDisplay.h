@@ -43,18 +43,18 @@ class WaveDisplay : public QWidget, public H2Core::Object
 		WaveDisplay(QWidget* pParent);
 		~WaveDisplay();
 
-		void		updateDisplay( H2Core::InstrumentLayer *pLayer );
+		virtual void	updateDisplay( H2Core::InstrumentLayer *pLayer );
 
-		void		paintEvent( QPaintEvent *ev );
-		void		resizeEvent( QResizeEvent * event );
-		void		mouseDoubleClickEvent(QMouseEvent *ev);
+		void			paintEvent( QPaintEvent *ev );
+		void			resizeEvent( QResizeEvent * event );
+		void			mouseDoubleClickEvent(QMouseEvent *ev);
 		
-		void		setSampleNameAlignment(Qt::AlignmentFlag flag);
+		void			setSampleNameAlignment(Qt::AlignmentFlag flag);
 
 	signals:
 		void doubleClicked(QWidget *pWidget);
 
-	private:
+	protected:
 		Qt::AlignmentFlag			m_SampleNameAlignment;
 		QPixmap						m_Background;
 		QString						m_sSampleName;

@@ -119,7 +119,9 @@ Preferences::Preferences()
 	m_nExportSampleRate = 44100;
 	m_nExportSampleDepth = 0;
 
-
+	//export midi dialog
+	m_sMidiExportDirectory = QDir::homePath();
+	m_nMidiExportMode = 0;
 	/////////////////////////////////////////////////////////////////////////
 	/////////////////// DEFAULT SETTINGS ////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////
@@ -150,6 +152,7 @@ Preferences::Preferences()
 	//___ MIDI Driver properties
 	m_sMidiDriver = QString("ALSA");
 	m_sMidiPortName = QString("None");
+	m_sMidiOutputPortName = QString("None");
 	m_nMidiChannelFilter = -1;
 	m_bMidiNoteOffIgnore = false;
 	m_bMidiFixedMapping = false;
@@ -198,6 +201,7 @@ Preferences::Preferences()
 	m_bShowInstrumentPeaks = true;
 	m_bIsFXTabVisible = true;
 	m_bShowAutomationArea = false;
+	m_bShowPlaybackTrack = false;
 	m_nPatternEditorGridHeight = 21;
 	m_nPatternEditorGridWidth = 3;
 	mainFormProperties.set(0, 0, 1000, 700, true);
@@ -440,6 +444,7 @@ void Preferences::loadPreferences( bool bGlobal )
 				} else {
 					m_sMidiDriver = LocalFileMng::readXmlString( midiDriverNode, "driverName", "ALSA" );
 					m_sMidiPortName = LocalFileMng::readXmlString( midiDriverNode, "port_name", "None" );
+					m_sMidiOutputPortName = LocalFileMng::readXmlString( midiDriverNode, "output_port_name", "None" );
 					m_nMidiChannelFilter = LocalFileMng::readXmlInt( midiDriverNode, "channel_filter", -1 );
 					m_bMidiNoteOffIgnore = LocalFileMng::readXmlBool( midiDriverNode, "ignore_note_off", true );
 					m_bMidiDiscardNoteAfterAction = LocalFileMng::readXmlBool( midiDriverNode, "discard_note_after_action", true);
@@ -494,6 +499,7 @@ void Preferences::loadPreferences( bool bGlobal )
 				m_bShowInstrumentPeaks = LocalFileMng::readXmlBool( guiNode, "showInstrumentPeaks", m_bShowInstrumentPeaks );
 				m_bIsFXTabVisible = LocalFileMng::readXmlBool( guiNode, "isFXTabVisible", m_bIsFXTabVisible );
 				m_bShowAutomationArea = LocalFileMng::readXmlBool( guiNode, "showAutomationArea", m_bShowAutomationArea );
+				m_bShowPlaybackTrack = LocalFileMng::readXmlBool( guiNode, "showPlaybackTrack", m_bShowPlaybackTrack );
 
 
 				// pattern editor grid height
@@ -518,6 +524,9 @@ void Preferences::loadPreferences( bool bGlobal )
 					
 				m_bFollowPlayhead = LocalFileMng::readXmlBool( guiNode, "followPlayhead", true );
 
+				// midi export dialog properties
+				m_nMidiExportMode = LocalFileMng::readXmlInt( guiNode, "midiExportDialogMode", 0 );
+				m_sMidiExportDirectory = LocalFileMng::readXmlString( guiNode, "midiExportDialogDirectory", QDir::homePath(), true );
 
 				//beatcounter
 				QString bcMode = LocalFileMng::readXmlString( guiNode, "bc", "BC_OFF" );
@@ -831,6 +840,7 @@ void Preferences::savePreferences()
 		{
 			LocalFileMng::writeXmlString( midiDriverNode, "driverName", m_sMidiDriver );
 			LocalFileMng::writeXmlString( midiDriverNode, "port_name", m_sMidiPortName );
+			LocalFileMng::writeXmlString( midiDriverNode, "output_port_name", m_sMidiOutputPortName );
 			LocalFileMng::writeXmlString( midiDriverNode, "channel_filter", QString("%1").arg( m_nMidiChannelFilter ) );
 
 			if ( m_bMidiNoteOffIgnore ) {
@@ -899,6 +909,7 @@ void Preferences::savePreferences()
 		LocalFileMng::writeXmlBool( guiNode, "showInstrumentPeaks", m_bShowInstrumentPeaks );
 		LocalFileMng::writeXmlBool( guiNode, "isFXTabVisible", m_bIsFXTabVisible );
 		LocalFileMng::writeXmlBool( guiNode, "showAutomationArea", m_bShowAutomationArea );
+		LocalFileMng::writeXmlBool( guiNode, "showPlaybackTrack", m_bShowPlaybackTrack );
 
 		// MainForm window properties
 		writeWindowProperties( guiNode, "mainForm_properties", mainFormProperties );
@@ -921,6 +932,10 @@ void Preferences::savePreferences()
 		LocalFileMng::writeXmlString( guiNode, "exportDialogDirectory", m_sExportDirectory );
 
 		LocalFileMng::writeXmlBool( guiNode, "followPlayhead", m_bFollowPlayhead );
+
+		//ExportMidiDialog
+		LocalFileMng::writeXmlString( guiNode, "midiExportDialogMode", QString("%1").arg( m_nMidiExportMode ) );
+		LocalFileMng::writeXmlString( guiNode, "midiExportDialogDirectory", m_sMidiExportDirectory );
 
 		//beatcounter
 		QString bcMode;

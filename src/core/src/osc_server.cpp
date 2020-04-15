@@ -34,6 +34,7 @@
 #include <lo/lo_cpp.h>
 
 #include "hydrogen/osc_server.h"
+#include "hydrogen/core_action_controller.h"
 #include "hydrogen/event_queue.h"
 #include "hydrogen/hydrogen.h"
 #include "hydrogen/basics/song.h"
@@ -249,9 +250,45 @@ int OscServer::generic_handler(const char *	path,
 OscServer::OscServer( H2Core::Preferences* pPreferences ) : Object( __class_name )
 {
 	m_pPreferences = pPreferences;
-	int port = m_pPreferences->getOscServerPort();
+	
+	if( m_pPreferences->getOscServerEnabled() )
+	{
+		int port = m_pPreferences->getOscServerPort();
+	
+		m_pServerThread = new lo::ServerThread( port );
+		
+		// If there is already another service registered to the same
+		// port, the OSC server is not valid an can not be started.
+		if ( !m_pServerThread->is_valid() ) {
+			int tmpPort;
+			
+			delete m_pServerThread;
+			
+			// Instead, let the liblo library choose a working
+			// port on their own (nullptr argument).
+			m_pServerThread = new lo::ServerThread( nullptr );
+			
+			tmpPort = m_pServerThread->port();
+			
+			ERRORLOG( QString("Could not start OSC server on port %1, using port %2 instead.").arg(port).arg(tmpPort));
+			
+			H2Core::EventQueue::get_instance()->push_event( H2Core::EVENT_ERROR, H2Core::Hydrogen::OSC_CANNOT_CONNECT_TO_PORT );		
+		} else {
+			INFOLOG( QString( "OSC server running on port %1" ).arg( port ) );
+		}
+	} else {
+		
+		m_pServerThread = nullptr;
+		
+	}
+}
 
-	m_pServerThread = new lo::ServerThread( port );
+OscServer::~OscServer(){
+	for (std::list<lo_address>::iterator it=m_pClientRegistry.begin(); it != m_pClientRegistry.end(); ++it){
+		lo_address_free( *it );
+	}
+
+	__instance = nullptr;
 }
 
 void OscServer::create_instance( H2Core::Preferences* pPreferences )
@@ -260,6 +297,9 @@ void OscServer::create_instance( H2Core::Preferences* pPreferences )
 		__instance = new OscServer( pPreferences );
 	}
 }
+
+// -------------------------------------------------------------------
+// Handler functions
 
 void OscServer::PLAY_Handler(lo_arg **argv,int i)
 {
@@ -560,6 +600,42 @@ void OscServer::REDO_ACTION_Handler(lo_arg **argv,int i)
 	pActionManager->handleAction( &currentAction );
 }
 
+// -------------------------------------------------------------------
+// Actions required for session management.
+
+void OscServer::NEW_SONG_Handler(lo_arg **argv, int argc) {
+	
+	auto pController = H2Core::Hydrogen::get_instance()->getCoreActionController();
+	pController->newSong( QString::fromUtf8( &argv[0]->s ) );
+}
+
+void OscServer::OPEN_SONG_Handler(lo_arg **argv, int argc) {
+
+	auto pController = H2Core::Hydrogen::get_instance()->getCoreActionController();
+	pController->openSong( QString::fromUtf8( &argv[0]->s ) );
+}
+
+void OscServer::SAVE_SONG_Handler(lo_arg **argv, int argc) {
+
+	auto pController = H2Core::Hydrogen::get_instance()->getCoreActionController();
+	pController->saveSong();
+}
+
+void OscServer::SAVE_SONG_AS_Handler(lo_arg **argv, int argc) {
+
+	auto pController = H2Core::Hydrogen::get_instance()->getCoreActionController();
+	pController->saveSongAs( QString::fromUtf8( &argv[0]->s ) );
+}
+
+void OscServer::QUIT_Handler(lo_arg **argv, int argc) {
+	
+	auto pController = H2Core::Hydrogen::get_instance()->getCoreActionController();
+	pController->quit();
+}
+
+// -------------------------------------------------------------------
+// Helper functions
+
 bool IsLoAddressEqual( lo_address first, lo_address second )
 {
 	bool portEqual = ( strcmp( lo_address_get_port( first ), lo_address_get_port( second ) ) == 0);
@@ -568,6 +644,9 @@ bool IsLoAddressEqual( lo_address first, lo_address second )
 	
 	return portEqual && hostEqual && protoEqual;
 }
+
+// -------------------------------------------------------------------
+// Main action handler
 
 void OscServer::handleAction( Action* pAction )
 {
@@ -696,11 +775,11 @@ void OscServer::handleAction( Action* pAction )
 }
 
 
-void OscServer::start()
+bool OscServer::start()
 {
-	if (!m_pServerThread->is_valid()) {
+	if ( m_pServerThread == nullptr || !m_pServerThread->is_valid() ) {
 		ERRORLOG("Failed to start OSC server.");
-		return;
+		return false;
 	}
 
 	/*
@@ -820,23 +899,21 @@ void OscServer::start()
 	m_pServerThread->add_method("/Hydrogen/UNDO_ACTION", "f", UNDO_ACTION_Handler);
 	m_pServerThread->add_method("/Hydrogen/REDO_ACTION", "", REDO_ACTION_Handler);
 	m_pServerThread->add_method("/Hydrogen/REDO_ACTION", "f", REDO_ACTION_Handler);
-	
+
+	m_pServerThread->add_method("/Hydrogen/NEW_SONG", "s", NEW_SONG_Handler);
+	m_pServerThread->add_method("/Hydrogen/OPEN_SONG", "s", OPEN_SONG_Handler);
+	m_pServerThread->add_method("/Hydrogen/SAVE_SONG", "", SAVE_SONG_Handler);
+	m_pServerThread->add_method("/Hydrogen/SAVE_SONG_AS", "s", SAVE_SONG_AS_Handler);
+	m_pServerThread->add_method("/Hydrogen/QUIT", "", QUIT_Handler);
+
 	/*
 	 * Start the server.
 	 */
 	m_pServerThread->start();
-
-
+	
 	INFOLOG(QString("Osc server started. Listening on port %1").arg( m_pPreferences->getOscServerPort() ));
-}
-
-OscServer::~OscServer()
-{
-	for (std::list<lo_address>::iterator it=m_pClientRegistry.begin(); it != m_pClientRegistry.end(); ++it){
-		lo_address_free( *it );
-	}
-
-	__instance = nullptr;
+	
+	return true;
 }
 
 

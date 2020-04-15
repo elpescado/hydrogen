@@ -271,6 +271,7 @@ public:
 	 */
 	QString				m_sMidiDriver;
 	QString				m_sMidiPortName;
+	QString				m_sMidiOutputPortName;
 	int					m_nMidiChannelFilter;
 	bool				m_bMidiNoteOffIgnore;
 	bool				m_bMidiFixedMapping;
@@ -547,6 +548,9 @@ public:
 	/** Setting #__useTimelineBpm.
 	 * \param val New choice. */
 	void			setUseTimelineBpm( bool val );
+	
+	void			setShowPlaybackTrack( bool val);
+	bool			getShowPlaybackTrack() const;
 
 	int				getRubberBandCalcTime();
 	void			setRubberBandCalcTime( int val );
@@ -567,7 +571,6 @@ public:
 	int				getExportSampleRate() const;
 	void			setExportSampleRate( int nExportSampleRate );
 
-	
 	int				getExportMode() const;
 	void			setExportMode(int nExportMode);
 	
@@ -576,7 +579,13 @@ public:
 	
 	int				getExportTemplate() const;
 	void			setExportTemplate( int nExportTemplate );
-	
+
+    int				getMidiExportMode() const;
+    void			setMidiExportMode(int nExportMode);
+
+    QString			getMidiExportDirectory() const;
+    void			setMidiExportDirectory( const QString &sExportDirectory );
+
 private:
 	/**
 	 * Object holding the current Preferences singleton. It is
@@ -663,7 +672,7 @@ private:
 	QString					m_sQTStyle;
 	int						m_nLastOpenTab;
 	int						m_nDefaultUILayout;
-
+	bool					m_bShowPlaybackTrack;
 
 	QString					applicationFontFamily;
 	int						applicationFontPointSize;
@@ -699,8 +708,13 @@ private:
 	int						m_nExportSampleDepth;
 	int						m_nExportTemplate;
 	//~ Export dialog
-	
-	Preferences();
+
+    // Export midi dialog
+    QString					m_sMidiExportDirectory;
+    int						m_nMidiExportMode;
+    //~ Export midi dialog
+
+    Preferences();
 
 	WindowProperties readWindowProperties( QDomNode parent, const QString& windowName, WindowProperties defaultProp );
 	void writeWindowProperties( QDomNode parent, const QString& windowName, const WindowProperties& prop );
@@ -709,6 +723,25 @@ private:
 	void readUIStyle( QDomNode parent );
 };
 
+inline QString Preferences::getMidiExportDirectory() const
+{
+    return m_sMidiExportDirectory;
+}
+
+inline void Preferences::setMidiExportDirectory(const QString &ExportDirectory)
+{
+    m_sMidiExportDirectory = ExportDirectory;
+}
+
+inline int Preferences::getMidiExportMode() const
+{
+    return m_nMidiExportMode;
+}
+
+inline void Preferences::setMidiExportMode(int ExportMode)
+{
+    m_nMidiExportMode = ExportMode;
+}
 
 inline int Preferences::getExportSampleDepth() const
 {
@@ -1124,14 +1157,13 @@ inline QString Preferences::getNsmSongName(void){
 inline bool Preferences::getOscServerEnabled(){
 	return m_bOscServerEnabled;
 }
-
 inline void Preferences::setOscServerEnabled( bool val ){
 	m_bOscServerEnabled = val;
 }
+
 inline bool Preferences::getOscFeedbackEnabled(){
 	return m_bOscFeedbackEnabled;
 }
-
 inline void Preferences::setOscFeedbackEnabled( bool val ){
 	m_bOscFeedbackEnabled = val;
 }
@@ -1139,7 +1171,6 @@ inline void Preferences::setOscFeedbackEnabled( bool val ){
 inline int Preferences::getOscServerPort(){
 	return m_nOscServerPort;
 }
-
 inline void Preferences::setOscServerPort( int oscPort ){
 	m_nOscServerPort = oscPort;
 }
@@ -1149,6 +1180,13 @@ inline bool Preferences::getUseTimelineBpm(){
 }
 inline void Preferences::setUseTimelineBpm( bool val ){
 	__useTimelineBpm = val;
+}
+
+inline void Preferences::setShowPlaybackTrack( bool val ) {
+	m_bShowPlaybackTrack = val; 
+}
+inline bool Preferences::getShowPlaybackTrack() const {
+	return m_bShowPlaybackTrack;
 }
 
 inline int Preferences::getRubberBandCalcTime(){

@@ -200,6 +200,10 @@
         <source>Sample length:</source>
         <translation>サンプル長:</translation>
     </message>
+    <message>
+        <source>Unable to load that sample file.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AudioFileBrowser_UI</name>
@@ -350,6 +354,82 @@
     </message>
 </context>
 <context>
+    <name>ExportMidiDialog</name>
+    <message>
+        <source>Export midi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMF1 single: export all instruments to a single track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMF1 multi: export each instrument to separate track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMF0: export all events to one track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Midi file (*%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export MIDI file</source>
+        <translation type="unfinished">MIDI ファイルへのエクスポート</translation>
+    </message>
+    <message>
+        <source>Directory %1 does not exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file %1 exists. 
+Overwrite the existing file?</source>
+        <translation type="unfinished">ファイル %1 は存在しています。
+上書きしますか?</translation>
+    </message>
+</context>
+<context>
+    <name>ExportMidiDialog_UI</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">ダイアログ</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Browse...</source>
+        <translation type="unfinished">参照(&amp;B)...</translation>
+    </message>
+    <message>
+        <source>Alt+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modus:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Export</source>
+        <translation type="unfinished">エクスポート(&amp;E)</translation>
+    </message>
+    <message>
+        <source>Alt+E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">閉じる(&amp;C)</translation>
+    </message>
+    <message>
+        <source>Alt+C</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ExportSongDialog</name>
     <message>
         <source>Export song</source>
@@ -371,6 +451,10 @@ Overwrite the existing file?</source>
     </message>
     <message>
         <source>Export to separate tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory %1 does not exists</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -548,6 +632,10 @@ Overwrite the existing file?</source>
         <source>Modus:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Choose type of interpolation method</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FileBrowser</name>
@@ -639,6 +727,10 @@ Are you sure?</source>
     <message>
         <source>modified</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Song saved.</source>
+        <translation type="unfinished">ソングを保存しました。</translation>
     </message>
 </context>
 <context>
@@ -1092,10 +1184,6 @@ MIDI = %2</source>
         <translation></translation>
     </message>
     <message>
-        <source>Hydrogen Song (*.h2song)</source>
-        <translation>Hydrogen のソングファイル (*.h2song)</translation>
-    </message>
-    <message>
         <source>Save song</source>
         <translation>ソングの保存</translation>
     </message>
@@ -1106,14 +1194,6 @@ MIDI = %2</source>
     <message>
         <source>Print Objects</source>
         <translation>オブジェクトの印刷</translation>
-    </message>
-    <message>
-        <source>Export MIDI file</source>
-        <translation>MIDI ファイルへのエクスポート</translation>
-    </message>
-    <message>
-        <source>Midi file (*.mid)</source>
-        <translation>MIDI ファイル (*.mid)</translation>
     </message>
     <message>
         <source>&amp;New</source>
@@ -1234,10 +1314,6 @@ MIDI = %2</source>
     <message>
         <source>Open &amp;Pattern</source>
         <translation>パターンを開く(&amp;P)</translation>
-    </message>
-    <message>
-        <source>Hydrogen Pattern (*.h2pattern)</source>
-        <translation>Hydrogen パターン (*.h2pattern)</translation>
     </message>
     <message>
         <source>Save Pattern as ...</source>
@@ -1455,6 +1531,26 @@ It should work like a charm provided that you use the GM-kit, and that you do no
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Playback track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Jack driver: cannot disconnect client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OSC Server: Cannot connect to given port, using temporary port instead</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retrieving information about drumkit &apos;%1&apos; failed: drumkit does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MasterMixerLine</name>
@@ -1650,14 +1746,6 @@ It should work like a charm provided that you use the GM-kit, and that you do no
         <translation>パン</translation>
     </message>
     <message>
-        <source>Cutoff</source>
-        <translation>カットオフ</translation>
-    </message>
-    <message>
-        <source>Resonance</source>
-        <translation>レゾナンス</translation>
-    </message>
-    <message>
         <source>Lead and Lag</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1783,21 +1871,6 @@ It should work like a charm provided that you use the GM-kit, and that you do no
     </message>
     <message>
         <source>Pattern description</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PianoRollEditor</name>
-    <message>
-        <source>Velocity</source>
-        <translation type="unfinished">ベロシティー</translation>
-    </message>
-    <message>
-        <source>Pan</source>
-        <translation type="unfinished">パン</translation>
-    </message>
-    <message>
-        <source>Lead and Lag</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1999,10 +2072,6 @@ It should work like a charm provided that you use the GM-kit, and that you do no
         <translation>プレイリストの読み込み</translation>
     </message>
     <message>
-        <source>Hydrogen Playlist (*.h2playlist)</source>
-        <translation>Hydrogen プレイリスト (*.h2playlist)</translation>
-    </message>
-    <message>
         <source>Save Playlist</source>
         <translation>プレイリストの保存</translation>
     </message>
@@ -2045,10 +2114,6 @@ Sorry, but this will not work for the moment.</source>
     <message>
         <source>sort</source>
         <translation>並べ替え</translation>
-    </message>
-    <message>
-        <source>Hydrogen Scripts (*.sh)</source>
-        <translation>Hydrogen スクリプト (*.sh)</translation>
     </message>
     <message>
         <source>New Script</source>
@@ -2187,10 +2252,6 @@ IMPORTANT
 The path to the script and the scriptname must be without whitespaces.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Hydrogen playlist (*.h2playlist)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>PlaylistDialog_UI</name>
@@ -2236,10 +2297,6 @@ The path to the script and the scriptname must be without whitespaces.</source>
     <message>
         <source>&lt;b&gt;ALSA Driver&lt;/b&gt;&lt;br&gt;</source>
         <translation>&lt;b&gt;ALSA ドライバ&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Automatic driver selection&lt;/b&gt;</source>
-        <translation>&lt;b&gt;ドライバの自動選択&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;PortAudio Driver&lt;/b&gt;&lt;br&gt;</source>
@@ -2289,6 +2346,18 @@ The path to the script and the scriptname must be without whitespaces.</source>
     </message>
     <message>
         <source>Color (Hue value)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatic driver selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;&lt;b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;/b&gt; selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2535,10 +2604,6 @@ The path to the script and the scriptname must be without whitespaces.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>second step, adjust offset between last controller/keybord trigger and the deferred sequencer startup </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Beat counter start offset in ms    </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2642,15 +2707,29 @@ The path to the script and the scriptname must be without whitespaces.</source>
         <source>Enable OSC &amp;feedback</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>second step, adjust offset between last controller/keyboard trigger and the deferred sequencer startup </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum number of instrument layers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum number of layers (requires restart of Hydrogen)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable midi feedback</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SampleEditor</name>
-    <message>
-        <source>Unsaved changes left. This changes will be lost. 
-Are you sure?</source>
-        <translation>このままだと保存されていない変更が失われます。
-よろしいですか？</translation>
-    </message>
     <message>
         <source>&amp;Ok</source>
         <translation></translation>
@@ -2664,6 +2743,11 @@ Are you sure?</source>
 Are you sure?</source>
         <translation>ダイアログを閉じますが、保存されていない変更があるかもしれません。
 よろしいですか？</translation>
+    </message>
+    <message>
+        <source>Unsaved changes left. These changes will be lost. 
+Are you sure?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3085,10 +3169,6 @@ Are you sure?</source>
         <source>Velocity</source>
         <translation type="unfinished">ベロシティー</translation>
     </message>
-    <message>
-        <source>Select playback track</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SongEditorPanelBpmWidget_UI</name>
@@ -3187,10 +3267,6 @@ Are you sure?</source>
         <translation>パターンを開く</translation>
     </message>
     <message>
-        <source>Hydrogen Pattern (*.h2pattern)</source>
-        <translation>Hydrogen パターン (*.h2pattern)</translation>
-    </message>
-    <message>
         <source>Virtual Pattern</source>
         <translation>仮想パターン</translation>
     </message>
@@ -3219,6 +3295,18 @@ Overwrite the existing pattern?</source>
     <message>
         <source>Export Pattern</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not export pattern.</source>
+        <translation type="unfinished">パターンをエクスポートできませんでした。</translation>
+    </message>
+    <message>
+        <source>Could not export sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pattern saved.</source>
+        <translation type="unfinished">パターンを保存しました。</translation>
     </message>
 </context>
 <context>
