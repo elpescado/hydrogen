@@ -94,4 +94,4 @@ on_finish:
   - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\windows\h2log.txt
   - cmd: |
       curl -F file=@%APPVEYOR_BUILD_FOLDER%\windows\test_installation.xml https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID%
-      #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
