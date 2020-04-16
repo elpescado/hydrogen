@@ -70,7 +70,7 @@ build_script:
       set DEPLOY_MODE=--release
       if %BUILD_TYPE% == "Debug" set DEPLOY_MODE=--debug
       echo %DEPLOY_MODE%
-      %QTDIR%\bin\windeployqt.exe -xmlpatterns --dir extralibs %DEPLOY_MODE% src/gui/hydrogen.exe
+      %QTDIR%\bin\windeployqt.exe -xmlpatterns --no-patchqt --dir extralibs %DEPLOY_MODE% src/gui/hydrogen.exe
 
       cpack -G NSIS -v
 
