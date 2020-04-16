@@ -8,7 +8,7 @@ environment:
 
     - MSYS: 'C:\msys64\mingw64'
       MSYS_REPO: 'mingw64/mingw-w64-x86_64'
-      BUILD_TYPE: "Release"
+      BUILD_TYPE: "RelWithDebInfo"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF -DWIN64:BOOL=ON"
 
     # - MSYS: 'C:\msys64\mingw32'
@@ -18,7 +18,7 @@ environment:
 
     - MSYS: 'C:\msys64\mingw32'
       MSYS_REPO: 'mingw32/mingw-w64-i686'
-      BUILD_TYPE: "Release"
+      BUILD_TYPE: "RelWithDebInfo"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF"
 
 image:
