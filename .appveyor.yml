@@ -19,7 +19,7 @@ environment:
     - MSYS: 'C:\msys64\mingw32'
       MSYS_REPO: 'mingw32/mingw-w64-i686'
       BUILD_TYPE: "Release"
-      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF -DFIXME_DISABLE_OPTIMIZATIONS""
+      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF -DFIXME_DISABLE_OPTIMIZATIONS"
 
 image:
   - "Visual Studio 2015"
