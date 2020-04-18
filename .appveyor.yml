@@ -39,9 +39,9 @@ before_build:
       set PKG_CONFIG_PATH=%MSYS%\lib\pkgconfig
 
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
-      rem mkdir build
-      rem cd build
-      cd windows
+      mkdir build
+      cd build
+      rem cd windows
       cmake --version
       cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% %CMAKE_FLAGS% ..
 
@@ -70,7 +70,7 @@ build_script:
       set DEPLOY_MODE=--release
       if %BUILD_TYPE% == "Debug" set DEPLOY_MODE=--debug
       echo %DEPLOY_MODE%
-      %QTDIR%\bin\windeployqt.exe -xmlpatterns --no-patchqt --dir extralibs %DEPLOY_MODE% src/gui/hydrogen.exe
+      %QTDIR%\bin\windeployqt.exe -xmlpatterns --no-patchqt --dir %APPVEYOR_BUILD_FOLDER%\windows\extralibs %DEPLOY_MODE% src/gui/hydrogen.exe
 
       cpack -G NSIS -v
 
@@ -94,4 +94,4 @@ on_finish:
   - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\windows\h2log.txt
   - cmd: |
       curl -F file=@%APPVEYOR_BUILD_FOLDER%\windows\test_installation.xml https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID%
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
