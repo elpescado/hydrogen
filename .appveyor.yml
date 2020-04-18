@@ -8,7 +8,7 @@ environment:
 
     - MSYS: 'C:\msys64\mingw64'
       MSYS_REPO: 'mingw64/mingw-w64-x86_64'
-      BUILD_TYPE: "Release"
+      BUILD_TYPE: "RelWithDebInfo"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF -DWIN64:BOOL=ON"
 
     # - MSYS: 'C:\msys64\mingw32'
@@ -18,7 +18,7 @@ environment:
 
     - MSYS: 'C:\msys64\mingw32'
       MSYS_REPO: 'mingw32/mingw-w64-i686'
-      BUILD_TYPE: "Release"
+      BUILD_TYPE: "RelWithDebInfo"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF"
 
 image:
@@ -35,8 +35,17 @@ before_build:
 
       set QTDIR=%MSYS%
       set CMAKE_PREFIX_PATH=%QTDIR%
-      set PATH=%MSYS%\bin;%QTDIR%\bin;%PATH%
+      set PATH=%MSYS%\bin;%PATH%
+      rem set PATH=%MSYS%\bin;%SystemRoot%\system32;%SystemRoot%
       set PKG_CONFIG_PATH=%MSYS%\lib\pkgconfig
+
+      where cmake
+      where g++
+      where windeployqt
+      where appveyor
+
+      cmake --version
+      g++ --version
 
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
       mkdir build
@@ -50,7 +59,7 @@ build:
 
 build_script:
   - cmd: |-
-      cmake --build . -j %NUMBER_OF_PROCESSORS%
+      cmake --build . -j %NUMBER_OF_PROCESSORS% -- VERBOSE=1
 
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
       echo %H2_HOME%
@@ -80,7 +89,7 @@ build_script:
 
       %PYTHON% -m pytest %APPVEYOR_BUILD_FOLDER%\windows\test_installation.py --junitxml=test_installation.xml
 
-      %INSTDIR%\hydrogen.exe -VDebug >h2log.txt 2>&1
+      rem %INSTDIR%\hydrogen.exe -VDebug >h2log.txt 2>&1
 
 artifacts:
   - path: windows\Hydrogen-*.exe
@@ -91,7 +100,8 @@ artifacts:
 #   - C:\msys64\mingw64
 
 on_finish:
-  - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\windows\h2log.txt
+  - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\windows\CMakeCache.txt
+# - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\windows\h2log.txt
   - cmd: |
       curl -F file=@%APPVEYOR_BUILD_FOLDER%\windows\test_installation.xml https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID%
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
