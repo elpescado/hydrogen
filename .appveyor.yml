@@ -101,8 +101,8 @@ artifacts:
 
 on_finish:
   - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\build\CMakeCache.txt
-  - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\build\CMakeOutput.txt
-  - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\build\CMakeError.txt
+  - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\build\CMakeFiles\CMakeOutput.txt
+  - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\build\CMakeFiles\CMakeError.txt
 # - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\windows\h2log.txt
   - cmd: |
       curl -F file=@%APPVEYOR_BUILD_FOLDER%\windows\test_installation.xml https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID%
