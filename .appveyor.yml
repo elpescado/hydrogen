@@ -71,7 +71,7 @@ build_script:
       7z a %APPVEYOR_BUILD_FOLDER%\testresults.zip %TEMP%\hydrogen
       appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\testresults.zip
 
-      mkdir extralibs
+      mkdir %APPVEYOR_BUILD_FOLDER%\windows\extralibs
       set PYTHON=C:\Python38\python
       %PYTHON% -m pip install -r %APPVEYOR_BUILD_FOLDER%\windows\requirements.txt
       %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
