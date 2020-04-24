@@ -72,14 +72,15 @@ build_script:
       appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\testresults.zip
 
       mkdir %APPVEYOR_BUILD_FOLDER%\windows\extralibs
-      set PYTHON=C:\Python38\python
-      %PYTHON% -m pip install -r %APPVEYOR_BUILD_FOLDER%\windows\requirements.txt
-      %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V debug src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
 
       set DEPLOY_MODE=--release
       if %BUILD_TYPE% == "Debug" set DEPLOY_MODE=--debug
       echo %DEPLOY_MODE%
       %QTDIR%\bin\windeployqt.exe -xmlpatterns --no-patchqt --dir %APPVEYOR_BUILD_FOLDER%\windows\extralibs %DEPLOY_MODE% src/gui/hydrogen.exe
+
+      set PYTHON=C:\Python38\python
+      %PYTHON% -m pip install -r %APPVEYOR_BUILD_FOLDER%\windows\requirements.txt
+      %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py --no-overwrite -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs -V src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
 
       cpack -G NSIS -v
 

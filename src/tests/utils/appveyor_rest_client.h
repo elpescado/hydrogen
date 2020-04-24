@@ -62,14 +62,44 @@ struct Test {
 };
 
 
+/**
+ * \brief An interface to AppVeyor build worker API
+ *
+ * \see https://www.appveyor.com/docs/build-worker-api/
+ */
 class BuildWorkerApiClient {
     public:
     BuildWorkerApiClient();
+
+    /**
+     * \brief Report new test result to AppVeyor build worker
+     *
+     * \see https://www.appveyor.com/docs/build-worker-api/#add-tests
+     */
     void addTest(const Test &testData);
+
+    /**
+     * \brief Update existing test result to AppVeyor build worker
+     *
+     * \see https://www.appveyor.com/docs/build-worker-api/#update-tests
+     */
     void updateTest(const Test &testData);
 
     private:
+    /**
+     * \brief Whether test reporting is enabled
+     *
+     * Test reporting is enabled when m_ApiRoot is set, and it's a valid URL.
+     */
     bool m_bEnabled;
+
+    /**
+     * \brief URL of build worker API endpoint
+     *
+     * URL of build worker API endpoint. Test progress is reported there.
+     * This variable is initialized from APPVEYOR_API_URL environment
+     * variable.
+     */
     QUrl m_ApiRoot;
 
     void doSyncRequest(QByteArray method, QString endpoint, const QJsonDocument &payload);
