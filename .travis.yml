@@ -8,7 +8,7 @@ jobs:
     dist: xenial
   - os: osx
     env:
-      - MACOSX_DEPLOYMENT_TARGET="10.10"
+      - MACOSX_DEPLOYMENT_TARGET="10.12"
   - os: osx
     env:
       - MACOSX_DEPLOYMENT_TARGET="10.10"
