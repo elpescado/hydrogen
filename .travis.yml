@@ -52,6 +52,9 @@ before_install:
   --prefix libarchive)/lib/pkgconfig"; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install libsndfile jack pulseaudio
   cppunit; fi
+# Make sure we have right Qt version on Mac legacy build
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$HOMEBREW_NO_AUTO_UPDATE" -eq "1" ]];
+  then test $(PKG_CONFIG_PATH=$(brew --prefix qt5)/lib/pkgconfig pkg-config --modversion Qt5Core) == 5.9.1; fi
 script:
 - mkdir build && cd build && cmake -DWANT_LASH=1 -DWANT_LRDF=1 -DWANT_RUBBERBAND=1
   .. && make
