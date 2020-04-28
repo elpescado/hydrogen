@@ -22,7 +22,6 @@
 
 #include "appveyor_rest_client.h"
 
-#include <QDebug>
 #include <QBuffer>
 #include <QEventLoop>
 #include <QJsonDocument>
@@ -81,8 +80,6 @@ BuildWorkerApiClient::BuildWorkerApiClient()
         m_ApiRoot = QUrl(apiRoot);
         m_bEnabled = m_ApiRoot.isValid();
     }
-    qDebug() << "Initialized AppVeyor API client, enabled = " << m_bEnabled;
-    qDebug() << " -> API root: " << m_ApiRoot;
 }
 
 
@@ -126,10 +123,6 @@ void BuildWorkerApiClient::doSyncRequest(QByteArray method, QString endpoint, co
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
-
-    qDebug() << reply->errorString();
-    QByteArray content = reply->readAll();
-    qDebug() << QString{content};
 }
 
 };
