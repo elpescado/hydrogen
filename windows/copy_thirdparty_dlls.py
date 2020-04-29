@@ -165,7 +165,7 @@ def main():
     parser.add_argument("-d", "--dest", type=str,
                         help="Destination directory")
     parser.add_argument("-V", "--verbose", type=str, action="store", nargs="?",
-                        default="error", const="warning",
+                        default="warning", const="info",
                         help="Verbosity level")
     parser.add_argument("--dry-run", action='store_true',
                         help="Do not copy anything; print files that would be copied")
