@@ -54,7 +54,7 @@ build:
 build_script:
   - cmd: |-
       REM *** Build ***
-      cmake --build . -j %NUMBER_OF_PROCESSORS% -- VERBOSE=1
+      cmake --build . -j %NUMBER_OF_PROCESSORS%
 
       REM *** Run tests and report results ***
       set H2_HOME=%APPVEYOR_BUILD_FOLDER%
