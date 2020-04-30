@@ -107,7 +107,7 @@ class LibraryResolver:
             if fi.kind == LibraryKind.THIRDPARTY:
                 dest_path = os.path.join(dest, fi.name)
                 if os.path.exists(dest_path) and no_overwrite:
-                    logging.info("%s already exists in %s", fi.path, dest)
+                    logging.info("%s already exists in %s", fi.name, dest)
                 else:
                     logging.info("Copying %s", fi.path)
                     shutil.copy(fi.path, dest_path)
