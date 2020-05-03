@@ -11,15 +11,15 @@ environment:
       BUILD_TYPE: "Release"
       CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=OFF -DFIXME_DISABLE_OPTIMIZATIONS=ON"
 
-    - MSYS: 'C:\msys64\mingw64'
-      MSYS_REPO: 'mingw64/mingw-w64-x86_64'
-      BUILD_TYPE: "Debug"
-      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON -DWIN64:BOOL=ON"
-
-    - MSYS: 'C:\msys64\mingw32'
-      MSYS_REPO: 'mingw32/mingw-w64-i686'
-      BUILD_TYPE: "Debug"
-      CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON"
+    # - MSYS: 'C:\msys64\mingw64'
+    #   MSYS_REPO: 'mingw64/mingw-w64-x86_64'
+    #   BUILD_TYPE: "Debug"
+    #   CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON -DWIN64:BOOL=ON"
+    #
+    # - MSYS: 'C:\msys64\mingw32'
+    #   MSYS_REPO: 'mingw32/mingw-w64-i686'
+    #   BUILD_TYPE: "Debug"
+    #   CMAKE_FLAGS: "-DWANT_DEBUG:BOOL=ON"
 
 image:
   - "Visual Studio 2015"
@@ -102,3 +102,4 @@ on_finish:
   - cmd: appveyor PushArtifact %APPVEYOR_BUILD_FOLDER%\build\CMakeFiles\CMakeError.log
   - cmd: |
       curl -F file=@%APPVEYOR_BUILD_FOLDER%\build\test_installation.xml https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID%
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
